@@ -1,1 +1,7 @@
 # Algorithms-and-Data-Structures
+
+Este repositório contém os resumos da disciplina [SIN5013 - Análise de Algoritmos e Estruturas de Dados](http://www.each.usp.br/digiampietri/SIN5013/), ministrada no primeiro semestre de 2021 por [Luciano Antonio Digiampietri](http://lattes.cnpq.br/1689147340536405).
+
+Os resumos foram desenvolvidos em latex e seus códigos / imagens são encontrados na pasta [Latex](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/tree/main/Latex). Os relatórios PDF foram movidos para a pasta [PDF](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/tree/main/PDF).
+
+Códigos em Python e R usados nos relatórios podem ser encontrados na pasta [Code](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/tree/main/Code).
