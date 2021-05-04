@@ -328,4 +328,58 @@ Resolvendo $cn < \frac{n^2}{1000}$
 \end{enumerate}
 Assim, encontramos uma função de $n_0$ em função de c que satisfaz  $0 \leq cn < \frac{n^2}{1000}$, sendo essa a função $n_0 = 1000c + 1$.
 
+\section{Exercícios de demonstração}
+\subsection{$\log_2n \in \Theta(\log_{16}n)$}
+Demonstrar que $\log_2n \in \Theta(\log_{16}n)$ é o mesmo que achar constantes positivas $c_1$, $c_2$ e $n_0$ tais que a inequação $0 \leq c_1 \log_{16}n \leq \log_2n \leq c_2 \log_{16}n$ seja verdadeira.
+
+Primeiro, note que a propriedade de mudança de base dos logaritmos (ChiliMath, 2021) pode ser utilizada para trocar a base 16 de $\log_{16}n$ para base 2. Assim:
+
+$\log_{16}n = \frac{\log_{2}n}{\log_{2}16} = \frac{\log_{2}n}{4}$
+
+Podemos então reconstruir a inequação como:
+
+$0 \leq c_1 \frac{\log_{2}n}{4} \leq \log_2n \leq c_2\frac{\log_{2}n}{4}$
+
+Resolvendo $0 \leq c_1 \frac{\log_{2}n}{4}$, notamos que a inequação será verdadeira para todo $c_1 \geq 0$ e para todo $n > 0$, visto que o log de 0 não é definido.
+
+Resolvendo $c_1 \frac{\log_{2}n}{4} \leq \log_2n$:
+
+\begin{enumerate}[Step 1:]
+	\item   $c_1 \frac{\log_{2}n}{4} \leq \log_2n$
+	\item   $c_1 \frac{\log_{2}n}{4} - \log_2n \leq 0$
+	\item   $\log_{2}n (\frac{1}{4}c_1 - 1) \leq 0$
+	
+	A inequação será verdadeira para $n > 0$ e para $\frac{1}{4}c_1 - 1 \leq 0$, resolvendo essa segunda inequação:
+	
+	\item $\frac{1}{4}c_1 - 1 \leq 0$
+	\item $\frac{1}{4}c_1 \leq 1$
+	\item $c_1 \leq 4$
+	
+	Logo, $n > 0$ e $c_1 \leq 4$ satisfazem a condição. Pode ser considerado, portanto:
+	
+	$n_0 = 1$ e $c_1 = 3$
+\end{enumerate}
+
+Resolvendo $\log_2n \leq c_2\frac{\log_{2}n}{4}$:
+\begin{enumerate}[Step 1:]
+	\item   $\log_2n \leq c_2\frac{\log_{2}n}{4}$
+	\item   $\log_2n - c_2\frac{\log_{2}n}{4} \leq 0$
+	\item   $\log_2n \ (1 - \frac{c_2}{4}) \leq 0$
+	
+	A inequação será verdadeira para $n > 0$ e para $(1 - \frac{c_2}{4}) \leq 0$, resolvendo essa segunda inequação:
+	
+	\item $1 - \frac{c_2}{4} \leq 0$
+	\item $1 \leq \frac{c_2}{4}$
+	\item $4 \leq c_2 \rightarrow c_2 \geq 4$
+	
+	Logo, $n_0 > 0$ e $c_2 \geq 4$ satisfazem a condição. Pode ser considerado, portanto:
+	
+	$n_0 = 1$ e $c_2 = 5$
+\end{enumerate}
+
+Portanto, as constantes $n_0 = 1$, $c_1 = 3$ e $c_2 = 5$ satisfazem as regras para demonstrar que $\log_2n \in \Theta(\log_{16}n)$
+
+\section{Referências}
+ChiliMath. 2021. \textbf{Proofs of Logarithm Properties or Rules}. Disponível em:  https://www.chilimath.com/lessons/advanced-algebra/proofs-of-logarithm-properties. Acesso em 4 de maio de 2021.
+
 \end{document}
