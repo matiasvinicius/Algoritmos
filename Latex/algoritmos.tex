@@ -151,7 +151,7 @@ Resolvendo $0 \leq f(n)$:
 
 \item $0 \leq n(\frac{3}{2}n - 2)$
 
-Como n  $\geq$ 0, a multiplicação $n(\frac{3}{2}n - 2)$ vai ser maior ou igual à zero se $\frac{3}{2}n - 2$ for maior ou igual à zero. Resolvendo essa multipĺicação temos: 
+Como n  $\geq$ 0, a multiplicação $n(\frac{3}{2}n - 2)$ vai ser maior ou igual à zero se $\frac{3}{2}n - 2$ for maior ou igual à zero. Resolvendo essa multiplicação temos: 
 
 \item $0 \leq \frac{3}{2}n - 2n$
 
@@ -190,15 +190,142 @@ Logo, $c \geq 3/2$ e $n \geq 0$
 
 \end{enumerate}
 
-Como $n \geq 4/3, n \geq 0 e c \geq 3/2$, podemos escolher constantes $n_0$ e $c$ que satisfaçam essas condições. Como exeplo:
+Como $n \geq 4/3, n \geq 0 e c \geq 3/2$, podemos escolher constantes $n_0$ e $c$ que satisfaçam essas condições. Como exemplo:
 
-$ n = 2, c = 3/2$
+$ n_0 = 2, c = 3/2$
 
 \section{Notação $\Omega$}
-A notação $\Omega$ sinifica que $f(n)$ cresce mais ou tão rápido quanto $g(n)$, ou que $f(n)$ domina $g(n)$
+A notação $\Omega$ (Omega) significa que $f(n)$ cresce mais ou tão rápido quanto $g(n)$, ou que $f(n)$ domina $g(n)$
 
 \begin{definition}
 $\Omega (g(n)) = \{f(n)$: existem constantes positivas $c$ e $n_0$ tais que $0 \leq cg(n) \leq f(n)$, para todo $n \geq n_0$\}
 \end{definition}
+
+
+\subsection{Exemplo}
+Demonstrar que $f(n) = \frac{3}{2}n^2 - 2n \in \Omega(n^2)$. 
+
+Isso é o mesmo que dizer que existem constantes positivas $c$ e $n_0$ onde: 
+$0 \leq cg(n) \leq f(n)$
+
+Resolvendo $0 \leq cg(n)$:
+
+
+\begin{enumerate}[Step 1:]
+	\item $0 \leq cn^2$
+	
+	Se $n \geq 0$, a condição também é satisfeita para $c \geq 0$
+	
+\end{enumerate}
+
+Resolvendo $cg(n) \leq f(n)$
+
+\begin{enumerate}[Step 1:]	
+	\item $cn^2 \leq \frac{3}{2}n^2 - 2n$
+		
+	\item $cn^2 \leq n(\frac{3}{2}n - 2)$	
+	
+	\item $cn \leq \frac{3}{2}n - 2$
+	
+	\item $2 \leq \frac{3}{2}n - cn$
+	
+	\item $2 \leq n(\frac{3}{2} - c)$
+	
+	Como n e c são maiores que 0, a inequação será verdadeira para $(\frac{3}{2} - c) > 0$ e um consequente valor mínimo de n.
+	
+	\item $(\frac{3}{2} - c) > 0 \rightarrow c < \frac{3}{2}$
+	
+	Como precisamos de um $c < 3/2$, consideraremos c = 1 aplicado ao passo 5
+	
+	\item $2 \leq n(\frac{3}{2} - 1)$
+	
+	\item $2 \leq n(\frac{1}{2})$
+
+	\item $4 \leq n \rightarrow n \geq 4$
+	
+	Logo, $\frac{3}{2}n^2 - 2n \in \Omega(n^2)$ para $n_0 = 4$ e $c = 1$
+		
+\end{enumerate}
+
+\section{Notação $\Theta$}
+A notação $\Theta$ (Theta) diz que uma função de complexidade $f(n)$ cresce no mínimo tão lentamente quanto $c_1g(n)$ e no máximo tão rapidamente quanto $c_2g(n)$, logo, $f(n)$ deverá crescer junto à $g(n)$, ou seja, tão rapidamente quanto $g(n)$.
+
+\begin{definition}
+	$\Theta(g(n)) = \{f(n)$: existem constantes positivas $c_1$, $c_2$ e $n_0$ tais que $0 \leq c_1g(n) \leq f(n) \leq c_2g(n)$, para todo $n \geq n_0$\}
+\end{definition}
+
+Note que $0 \leq c_1g(n) \leq f(n)$ é a definição de $\mathcal{O}$ para um $c = c_1$ ($f(n)$ domina $g(n)$), e que $0 \leq f(n) \leq c_2g(n)$ é a definição de $\Omega$ para $c = c_2$ ($g(n)$ domina $f(n)$). A partir disso pode-se concluir duas coisas. 
+
+A primeira conclusão é algo que foi mencionado no parágrafo anterior à definição: $\Theta(g(n))$ significa que uma função cresce tão rapidamente quanto $g(n)$. Se $f(n)$ domina e é dominado por $g(n)$, $f(n)$ deve crescer tão rapidamente quanto $g(n)$.
+
+A segunda conclusão é que para definir as constantes de $\Theta(g(n))$, podemos utilizar as constantes $c$ e $n_0$ encontradas em $\mathcal{O}(g(n))$ e $\Omega(g(n))$, tomando o cuidado de se escolher um $n_0$ que satisfaça as condições de $\mathcal{O}(g(n))$ e $\Omega(g(n))$.
+
+\subsection{Exemplo}
+Demonstrar que $f(n) = \frac{3}{2}n^2 - 2n \in \Theta(n^2)$. 
+
+Isso é o mesmo que dizer que existem constantes positivas $c_1$, $c_2$ e $n_0$ onde: 
+
+$0 \leq c_1g(n) \leq f(n) \leq c_2g(n)$
+
+Como $cf(n) \in \mathcal{O}(g(n)) $ para $c = \frac{3}{2}$ e $n_0 = 2$; e
+
+$cf(n) \in \Omega(g(n))$ para $c = 1$ e $n_0 = 4$
+
+Podemos concluir que $f(n) = (3/2)n^2 - 2n \in \Theta(n^2)$ para $c_1 = 1$, $c_2 = 3/2$ e $n_0 = 4$.
+
+\section{Notação o}
+A notação $o(g(n))$ ("o" minúsculo ou "o" pequeno)  diz que uma função $f(n)$ cresce mais lentamente que $g(n)$.
+
+\begin{definition}
+	$o(g(n)) = \{f(n): \forall c>0, \ \exists \ n_0 > 0 \ | \ 0 \leq f(n) < cg(n), \ \forall n \geq n_0 \}$
+\end{definition} 
+
+\subsection{Exemplo}
+Demonstrar que $1000n^2 \in o(n^3)$ (uma função quadrática cresce mais lentamente que uma função cúbica)
+
+Demonstrar que $f(n) \in o(g(n)))$ é o mesmo que mostrar que para toda constante positiva c, existe um valor de $n_0 > 0$ que satisfaça a inequação $0 \leq f(n) < cg(n)$
+
+Logo, deve-se encontrar uma função de $n_0$ em relação à $c$ para $0 \leq 1000n^2 < cn^3$
+
+Resolvendo $0 \leq 1000n^2$ identificamos que o resultado é válido para qualquer valor real de $n$.
+
+Resolvendo $1000n^2 < cn^3$:
+
+\begin{enumerate}[Step 1:]
+	\item $1000n^2 < cn^3$
+	\item $1000 < cn$	
+	\item $1000/c < n$
+	\item $n > 1000/c$
+	
+	Dada esta inequação, precisamos formular uma equação para $n_0$ que siga as diretrizes de n estritamente maior que 1000/c. Uma equação possível é $n_0 = \frac{1000}{c} + 1$.
+\end{enumerate}
+Assim, encontramos uma função de $n_0$ em função de c que satisfaz $0 \leq 1000n^2 < cn^3$, sendo essa a função $n_0 = \frac{1000}{c} + 1$.
+
+\section{Notação $\omega$}
+A notação $\omega(g(n))$ (ômega pequeno)  diz que uma função $f(n)$ cresce mais rapidamente que $g(n)$.
+
+\begin{definition}
+	$o(g(n)) = \{f(n): \forall c>0, \ \exists \ n_0 > 0 \ | \ 0 \leq cg(n) < f(n), \ \forall n \geq n_0 \}$
+\end{definition} 
+
+\subsection{Exemplo}
+Demonstrar que $\frac{n^2}{1000} \in \omega(n)$ (uma função quadrática cresce mais rapidamente que uma função linear)
+
+Demonstrar que $f(n) \in \omega(g(n)))$ é o mesmo que mostrar que para toda constante positiva c, existe um valor de $n_0 > 0$ que satisfaça a inequação $0 \leq cg(n) < f(n)$
+
+Logo, deve-se encontrar uma função de $n_0$ em relação à $c$ para $0 \leq cn < \frac{n^2}{1000}$
+
+Resolvendo $0 \leq cn$ identificamos que o resultado é válido para qualquer valor positivo de $n$ e $c$.
+
+Resolvendo $cn < \frac{n^2}{1000}$
+
+\begin{enumerate}[Step 1:]
+	\item $cn < \frac{n^2}{1000}$
+	\item $c < \frac{n}{1000}$
+	\item $1000c < n \rightarrow n > 1000c$
+	
+	Dada esta inequação, precisamos formular uma equação para $n_0$ que siga as diretrizes de n estritamente maior que 1000c. Uma equação possível é $n_0 = 1000c + 1$.
+\end{enumerate}
+Assim, encontramos uma função de $n_0$ em função de c que satisfaz  $0 \leq cn < \frac{n^2}{1000}$, sendo essa a função $n_0 = 1000c + 1$.
 
 \end{document}
