@@ -29,7 +29,7 @@ showstringspaces=false,
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
-\title{Análise de Algoritmos}
+\title{Análise da Complexidade de Algoritmos}
 \author{Vinicius A. Matias}
 \date{\today}
 \begin{document}
@@ -379,6 +379,71 @@ Resolvendo $\log_2n \leq c_2\frac{\log_{2}n}{4}$:
 
 Portanto, as constantes $n_0 = 1$, $c_1 = 3$ e $c_2 = 5$ satisfazem as regras para demonstrar que $\log_2n \in \Theta(\log_{16}n)$
 
+\subsection{$n^3 \in \omega(n)$}
+Demonstrar que $n^3 \in \omega(n)$ é o mesmo que achar uma função de $n_0$ em relação à $c$ que obedeça a inequação $0 \leq cn < n^3$
+
+Resolvendo $0 \leq cn$, notamos que a inequação será verdadeira para qualquer $c \geq 0$ e $n \geq 0$.
+
+Resolvendo $cn < n^3$ temos:
+\begin{enumerate}[Step 1:]
+	\item $cn < n^3$
+	\item $c < n^2$
+	\item $(c)^\frac{1}{2} < (n^2)^\frac{1}{2}$
+	\item $c^\frac{1}{2} < n$	
+	\item $n > c^\frac{1}{2}$		
+	\item $n > \sqrt{c}$
+	
+	Logo, uma possível função para definir $n_0$ é $n_0 = \sqrt{c} + 1$ 	
+\end{enumerate}
+
+\subsection{$n \in \Omega(\sqrt{n})$}
+Demonstrar que $n \in \Omega(\sqrt{n})$ é o mesmo que encontrar constantes $c \geq 0$ e $n_0 \geq 0$ que satisfaçam a inequação $0 \leq c \sqrt{n} \leq n$.
+
+Notamos que $0 \leq c \sqrt{n}$ sempre será maior que 0 para qualquer constante c e n maiores ou iguais à 0.
+
+Resolvendo $c\sqrt{n} \leq n$:
+\begin{enumerate}[Step 1:]
+	\item $c\sqrt{n} \leq n$
+	\item $c \sqrt{n} * (\frac{\sqrt{n}}{n}) \leq n * (\frac{\sqrt{n}}{n})$
+	\item $c \frac{n}{n} \leq  \frac{n}{n} \sqrt{n}$
+	\item $c \leq \sqrt{n} \rightarrow \sqrt{n} \geq c$
+	\item $(\sqrt{n})^\frac{1}{2} \geq (c)^\frac{1}{2}$
+	\item $n \geq \sqrt{c}$
+	
+	Assim, valores de $n_0$ e $c$ que obedecem $n \geq \sqrt{c}$ podem ser $n_0 = 2$ e $c = 4$
+\end{enumerate}
+
+\subsection{$\sqrt{n} \in o(n)$}
+	Demonstrar que $\sqrt{n} \in o(n)$ é o mesmo que encontrar uma função para $n_0$ em relação à $c$ onde a inequação $0 \leq \sqrt{n} < cn$. Note que $0 \leq \sqrt{n}$ é verdadeiro para todo $n$ maior ou igual à zero.
+	
+	Resolvendo $\sqrt{n} < cn$:
+	\begin{enumerate}[Step 1:]
+		\item $\sqrt{n} < cn \rightarrow cn > \sqrt{n}$
+		\item $c > \frac{\sqrt{n}}{n}$
+		\item $c > \frac{1}{\sqrt{n}}$
+		
+		Logo, uma equação possível é $c = \frac{1}{\sqrt{n}} + 1$
+	\end{enumerate}
+
+\subsection{$10n^2 - 10n \in \mathcal{O}(n^2)$}
+	Demonstrar que $10n^2 - 10n \in \mathcal{O}(n^2)$ é o mesmo que encontrar constantes positivas $c$ e $n_0$ onde $0 \leq 10n^2 - 10n \leq cn^2$
+	
+	Resolvendo $0 \leq 10n^2 - 10n$, notamos que o polinômio será sempre maior ou igual à zero para qualquer $n \geq 0$.
+	
+	Resolvendo $10n^2 - 10n \leq cn^2$
+	\begin{enumerate}[Step 1:]
+		\item $10n^2 - 10n \leq cn^2$
+		\item $10n \leq cn^2 - 10n^2$
+		\item $10n \leq n^2(c - 10)$
+		\item $10 \leq n(c - 10)$
+		\item $n(c - 10) \geq 10$
+		
+		Considerando que $n$ sempre será maior que 0, a verdade da inequação depende que ($c-10$) seja estritamente maior que 0, ou seja $c-10 > 0 \rightarrow c > 10$.
+		
+		Assim, a inequação é verdadeira para $n > 0$ e $c > 10$. Constantes possíveis são $n_0 = 1$ e $c = 11$.
+		
+	\end{enumerate}
+	
 \section{Referências}
 ChiliMath. 2021. \textbf{Proofs of Logarithm Properties or Rules}. Disponível em:  https://www.chilimath.com/lessons/advanced-algebra/proofs-of-logarithm-properties. Acesso em 4 de maio de 2021.
 
