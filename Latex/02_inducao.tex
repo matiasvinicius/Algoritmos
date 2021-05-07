@@ -1,0 +1,83 @@
+\documentclass[a4paper, twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{a4wide}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+	language=Python,
+	basicstyle=\small\sffamily,
+	numbers=left,
+	numberstyle=\tiny,
+	xleftmargin = 3em,
+	frame=tb,
+	columns=fullflexible,
+	showstringspaces=false,
+}
+
+\graphicspath{ {images/} }
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\title{Indução}
+\author{Vinicius A. Matias}
+\date{\today}
+\begin{document}
+	\maketitle
+	
+\section{Indução matemática}
+A indução é uma técnica matemática para provar um teorema $T$ para todos os valores de $n$. Para provar um teorema por indução devem ser obedecidas duas condições:
+
+\begin{enumerate}
+	\item Passo base: $T$ é válido para $n$ = 1
+	\item Passo indutivo: Para todo $n$>1, se $T$ é válido para $n-1$, então $T$ é válido para n
+\end{enumerate}
+
+\subsection{Exemplo}
+Considerando a soma dos primeiros $n$ números naturais como $S(n) = 1 + 2 +...+ n$; queremos provar por indução que:
+
+$S(n) = \frac{n*(n+1)}{2}, \forall n \geq 1$ \\
+
+\textbf{Passo base:} $S(1) = 1$
+
+$S(1) = \frac{1*(1+1)}{2} = 1$ \\
+
+\textbf{Passo Indutivo:}
+
+Como o caso base é verdadeiro, assumimos:
+
+$S(n-1) =\frac{(n-1) * ((n-1)+1)}{2}$ verdadeiro por Hipótese de Indução 
+
+Então, para encontrarmos $S(n)$ conhecendo $S(n-1)$ devemos notar que precisamos adicionar $n$ à $S(n-1)$, ou seja:
+
+$S(n) = S(n-1) + n$
+
+E isso é verdade pois:
+
+$S(n) = S(n-1) + n$
+
+$S(n) = \frac{(n-1) * ((n-1)+1)}{2} + n$
+
+$S(n) = \frac{(n-1) * n}{2} + n$
+
+$S(n) = \frac{n^2-n}{2} + n$
+
+$S(n) = \frac{n^2-n + 2n}{2}$
+
+$S(n) = \frac{n^2 + n}{2}$
+
+$S(n) = \frac{n(n + 1)}{2}$
+
+Assim, está demonstrado que $S(n) = \frac{n(n + 1)}{2}$ é a fórmula para a soma dos primeiros $n$ números naturais.
+	
+\end{document}
