@@ -135,14 +135,14 @@ $m*n = m*(n-1) + m$
 
 Assim, podemos definir um código como o seguinte:
 
-\begin{lstlisting}[label=max_array,caption= Multiplicação recursiva]
+\begin{lstlisting}[label=mult_rec,caption= Multiplicação recursiva]
 def mult(m, n):
 	if n == 0: return 0
 	return mult(m, n-1) + m
 \end{lstlisting}
 
 Apenas para comparação, um código iterativo para a multiplicação é exibido na Listing 2.
-\begin{lstlisting}[label=max_array,caption= Multiplicação iterativa]
+\begin{lstlisting}[label=mult_iter,caption= Multiplicação iterativa]
 def mult(m, n):
 	soma = 0	
 	for i in range(n):
@@ -150,6 +150,57 @@ def mult(m, n):
 	return soma
 \end{lstlisting}
 
+\section{Exercícios}
+\subsection{Fatorial}
+Resolva recursivamente o cálculo da fatorial de um número.
+
+\textbf{Caso base}: Fatorial de 0 é igual à 1
+
+\textbf{Passo indutivo}: Como fat(n-1) = (n-1)! é verdade por Hipótese de Indução, temos que:
+
+$fat(n) = fat(n-1)*n$
+
+\begin{lstlisting}[label=fatorial,caption= Fatorial recursiva]
+def fatorial(n):
+	if n == 0: return 1
+	return fatorial(n-1)*n
+\end{lstlisting}
+
+\subsection{Fibonacci}
+Sendo que por definição um elemento $n$ da série de fibonacci é igual à soma de seus dois antecessores, temos que:
+
+\textbf{Caso base}: $f_0 = 0$ e $f_1 = 1$
+
+\textbf{Passo indutivo}: $f_n = f_{n-1} + f_{n-2}, \forall n \geq 2$ é verdadeiro por Hipótese de Indução.
+
+Definindo um código recursivo para calcular o n-ésimo valor da sequência de fibonacci, podemos utilizar a implementação da Listing 4.
+
+\begin{lstlisting}[label=fibonacci,caption= Fionacci recursivo]
+def fib(n):
+	if n == 0 or n == 1: return n
+	return fib(n-1) + fib(n-2)
+\end{lstlisting}
+
+Note que uma versão iterativa deste código é mais viável, pois é recorrente fazer a mesma ação duas vezes. Ainda, com um $n=40$ o tempo de execução do código já fica inviável.
+
+\subsection{Busca sequencial}
+Definir recursivamente a busca sequencial.
+
+\begin{lstlisting}[label=busca_seqa,caption= Busca sequencial recursiva]
+def busca_seq(A, valor, n):
+	if n == 0: return -1
+	if A[n-1] == valor: return n-1
+	return busca_seq(A, valor, n-1)
+\end{lstlisting}
+
+\subsection{Busca binária}
+Definir recursivamente a busca binária.
+
+\begin{lstlisting}[label=busca_binaria,caption= Busca binária recursiva]
+def busca_binaria(A, valor, n):
+	if n == 0: return -1
+	
+\end{lstlisting}
 
 
 \end{document}
