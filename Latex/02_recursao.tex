@@ -7,6 +7,7 @@
 \usepackage{color}
 \usepackage{a4wide}
 \usepackage{float}
+\usepackage{verbatim}
 \usepackage{graphicx}
 \usepackage{indentfirst}
 \usepackage{enumerate}
@@ -531,5 +532,196 @@ $T(n) = 0 + n*n - n$
 
 $T(n) = n^2 - n$
 
+
+\subparagraph{VI - } {$T(n) = \begin{cases} 
+		1, n  = 1\\
+		T(n-1) + n, \ n > 1
+	\end{cases}$}
+
+Note que a equação de recorrência para $n>1$ segue passos de 1 em 1 ($T(n-1)$). Começaremos manipulando a equação $T(n)$ para n maior que 1 com parâmetros n-1, n-2 e n-3.
+
+$T(n) = T(n-1) + n$
+
+$T(n-1) = T(n-1-1) + n-1 = T(n-2) + n-1$
+
+$T(n-2) = T(n-2-1) + n-2 = T(n-3) + n-2$
+
+$T(n-3) = T(n-3-1) + n-3 = T(n-4) + n-3$
+
+[...] \\
+
+Aplicaremos os valores obtidos para expandir a equação de recorrência para $T(n)$:
+
+$T(n) = T(n-1) + n$
+
+$T(n) =  T(n-2) + (n-1) + n$
+
+$T(n) =  T(n-3) + (n-2) + (n-1) + n$
+
+$T(n) =  T(n-4) + (n-3) + (n-2) + (n-1) + n$
+
+[...] \\
+
+$T(n) =  T(n-i) + \sum_{j=0}^{i-1} (n-j)$
+
+Perceba que o somatório se refere à progressão aritmética $n + (n-1) + (n-2) + ... + (n-i-1)$. Aplicando a fórmula de soma de uma progressão aritmética temos:
+
+$T(n) = T(n-i) + \frac{i(n + (n-i-1))}{2}$
+
+$T(n) = T(n-i) + \frac{i(2n-i+1))}{2}$ \\
+
+Podemos trocar $T(n-i)$ para $T(1)$ se $i=n-1$:
+
+$T(n) = T(n-i) + \frac{i(2n-i+1)}{2}$
+
+$T(n) =  T(n-n+1) + \frac{(n-1)(2n-(n-1)+1)}{2}$
+
+$T(n) =  1 + \frac{(n-1)(2n-n+1+1)}{2}$
+
+$T(n) =  1 + \frac{(n-1)(n+2)}{2}$
+
+$T(n) =  1 + \frac{n^2 + n -2}{2}$
+
+$T(n) =  \frac{n^2 + n -2 + 2}{2}$ ($1=2/2$)
+
+$T(n) =  \frac{n^2 + n}{2}$ \\
+
+Assim, demonstramos que :
+
+$T(n) = T(n-1) + n = \frac{n^2 + n}{2}$ para $n > 1$
+
+
+\subparagraph{VII - } {$T(n) = \begin{cases} 
+		0, n  = 1\\
+		1, n  = 2\\
+		T(\frac{n}{2}) + 1, \ n > 2
+	\end{cases}$}
+
+Note que a equação de recorrência para $n>2$ cresce em frações de 2 ($T(n/2)$). Começaremos manipulando a equação $T(n)$ com parâmetros n/2, n/4 e n/8.
+
+$T(n) = T(\frac{n}{2}) + 1$
+
+$T(\frac{n}{2}) = T(\frac{n/2}{2}) + 1 = T(\frac{n}{4}) + 1$
+
+$T(\frac{n}{4}) = T(\frac{n/4}{2}) + 1 = T(\frac{n}{8}) + 1$
+
+$T(\frac{n}{8}) = T(\frac{n/8}{2}) + 1 = T(\frac{n}{16}) + 1$ \\
+
+Manipulando $T(n)$ com esses resultados:
+
+$T(n) = T(\frac{n}{2}) + 1$
+
+$T(n) = T(\frac{n}{4}) + 1 + 1$
+
+$T(n) = T(\frac{n}{8}) + 1 + 1 + 1$
+
+$T(n) = T(\frac{n}{16}) + 1 + 1 + 1 + 1$
+
+$T(n) = T(\frac{n}{2^4}) + 4$
+
+[...]
+
+$T(n) = T(\frac{n}{2^i}) + i$
+
+Para remover a recorrência $T(n/2^i)$ buscaremos um valor de $i$ que leve à um dos casos base ($1$ ou $2$). \\
+
+Tentando para $T(1)$:
+
+$\frac{n}{2^i} = 1$
+
+$n = 2^i$
+
+$n = 2^i$
+
+$\log_2 n = i$ \\
+
+Aplicando na função de recorrência $T(n)$ o fato de $i = \log_2 n$ (levando à $T(1)$):
+
+$T(n) = T(\frac{n}{2^i}) + i$
+
+$T(n) = T(1) + \log_2 n$
+
+$T(n) = T(1) + \log_2 n$
+
+$T(n) = \log_2 n$
+
+Assim, demonstramos que :
+
+$T(n) = T(\frac{n}{2}) + 1 =\log_2 n$ para $n > 2$
+
+\subparagraph{VIII - } {$T(n) = \begin{cases} 
+		1,\ n = 1, \\
+		T(\frac{n}{2}) + n, \ n > 1
+	\end{cases}$}
+
+\textbf{Desafio}: Encontrar o erro na resolução da equação de recorrência "desenvolvida" abaixo. \\
+
+Note que a equação de recorrência para $n>2$ cresce em frações de 2 ($T(n/2)$). Começaremos manipulando a equação $T(n)$ com parâmetros n/2, n/4 e n/8.
+
+$T(n) = T(\frac{n}{2}) + n$
+
+$T(n/2) = T(\frac{n/2}{2}) + n = T(\frac{n}{4}) + n/2$
+
+$T(n/4) = T(\frac{n/4}{2}) + n = T(\frac{n}{8}) + n/4$
+
+$T(n/8) = T(\frac{n/8}{2}) + n = T(\frac{n}{16}) + n/8$ \\
+
+
+Manipulando $T(n)$ com esses resultados:
+
+$T(n) = T(\frac{n}{2}) + n$
+
+$T(n) = T(\frac{n}{4}) + n/2 + n$
+
+$T(n) = T(\frac{n}{8}) + n/4 + n/2 + n$
+
+$T(n) = T(\frac{n}{16}) + n/8 + n/4 + n/2 + n$
+
+$T(n) = T(\frac{n}{2^4}) + n/2^3 + n/2^2 + n/2^1 + n/2^0$
+
+[...]
+
+$T(n) = T(\frac{n}{2^i}) + \sum_{j=0}^{i-1} n/2^j$
+
+Primeiro, perceba que $\sum_{j=0}^{i-1} n/2^j$ é uma soma da progressão geométrica $n + n/2 + n/4 + ... + n/i-1$ podendo realizar a substituição: \\
+
+$ \sum_{j=0}^{i-1} n/2^j = n*(\frac{1}{2}^n - 1) / \frac{1}{2} - 1 \\
+= n*(\frac{1}{2}^{i-1} - 1) / - \frac{1}{2} \\
+= n*(\frac{1}{2}^{i-1}) - n / - \frac{1}{2}$
+
+
+Segundo, para remover a recorrência $T(n/2^i)$ buscaremos um valor de $i$ que leve ao caso base ($T(1)$): \\
+
+$\frac{n}{2^i} = 1$
+
+$n = 2^i$
+
+$n = 2^i$
+
+$\log_2 n = i$ \\
+
+Aplicando na função de recorrência $T(n)$ o fato de $i = \log_2 n$ (levando à $T(1)$):
+
+$T(n) = T(1) + (n*(\frac{1}{2}^{(\log_2 n)-1}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(\frac{1}{2}^{(\log_2 n)-1}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(\frac{1}{2}^{(\log_2 n)-1}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(2^{-1 + (\log_2 n)-1}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(2^{(\log_2 n) - 2}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(2^{(\log_2 n)} * 2^{-2}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(n * 2^{-2}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(n * \frac{1}{2^2}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (n*(\frac{n}{2^2}) - n / - \frac{1}{2})$
+
+$T(n) = 1 + (\frac{n^2}{2^2} - n / - \frac{1}{2})$ \\
+
+\textbf{Dica}: Verifique novamente a definição da Progressão Geométrica.
 
 \end{document}
