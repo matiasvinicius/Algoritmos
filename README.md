@@ -11,3 +11,5 @@ Os relatórios tratam de:
 * [Complexidade de Algoritmos](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/01_complexidade_de_algoritmos.pdf): Funções de complexidade, crescimento assintótico e notações para crescimento assintótico;
 
 * [Recursão](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/02_recursao.pdf): Indução matemática, problemas recursivos e equações de recorrência.
+
+* [Técnicas de Programação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/03_tecnicas_programacao.pdf): Divisão e Conquista, teorema mestre, tentativa e erro e algoritmos gulosos.
