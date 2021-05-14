@@ -63,7 +63,7 @@
 	
 	\subsection{Teorema Mestre}
 	
-	A definição à seguir do teorema mestre provém do livro Algoritmos: Teoria e Prática (Cormen et al., ): \\
+	A definição à seguir do teorema mestre provém do livro Algoritmos: Teoria e Prática (Cormen et al., 2012): \\
 	
 	Sejam $a \geq 1$ e $b > 1$ constantes. Seja $f(n)$ uma função, e seja $T(n)$ definida  no  domínio dos  números  inteiros  não negativos pela recorrência \\
 	
@@ -77,7 +77,10 @@
 	
 	3. Se $f(n) \in \Omega(n^{logb a+ \epsilon})$ para alguma constante $\epsilon > 0$, e se $af(n/b) \leq cf(n)$ para alguma constante $c < 1$ e todos os $n$ suficientemente grandes, então $T(n) \in \Theta(f(n))$.
 	
-	\subsection{Exemplo de Aplicação do Teorema Mestre}
+	\subsection{Exemplos de Aplicação do Teorema Mestre}
+	
+	\textbf{I - $T(n) = 9T(n/3)+ n$}
+		
 	Descobrir a complexidade assintótica da equação de recorrência $T(n) = 9T(n/3)+ n$.
 	
 	Para utilizar o teorema mestre neste problema, definimos:
@@ -101,7 +104,49 @@
 	
 	E $f(n) \in \mathcal{O}(n)$, logo:
 	
-	$T(n) \in \Theta(n^2)$
+	$T(n) \in \Theta(n^2)$ \\
+	
+	
+	\textbf{I - $T(n) = 4T(n/2)+ n^3$} \\
+	
+	$a = 4$;
+	$b = 2$;
+	$f(n) = n^3$ 
+	
+	Verificando a cláusula 2 do Teorema Mestre:
+	
+	$\Theta(n^{\log_2 4}) = \Theta(n^{2})$
+	
+	E $f(n) = n^3 \notin \Theta(n^{2})$ (falha da cláusula 2)
+	
+	Como $f(n)$ cresce mais rápido que $\Theta(n^{2})$, buscaremos na cláusula 3 verificar se $f(n)$ obedece o crescimento mínimo para um $\epsilon$
+	
+	A primeira verificação da terceira cláusula do teorema mestre que verificaremos é se $af(n/b) \leq cf(n)$, para alguma constante $c < 1$: \\
+	
+	$4*(\frac{n}{2})^3 \leq cn^3$
+
+	$= 4*\frac{n^3}{8} \leq cn^3$
+
+	$= n^3/2 \leq cn^3$
+
+	$= 1/2 \leq c$
+
+	Ou seja, a inequação é verdadeira para algum $c < 1$, como exemplo $c=1/2$
+	
+	Agora verificaremos se $f(n) \in \Omega(n^{\log_b a + \epsilon})$:
+	
+	$\Omega(n^{\log_2 4 + \epsilon})$
+
+	$\Omega(n^{\log_2 4 + 4})$, com $\epsilon = 4$
+
+	$\Omega(n^{\log_2 8})$
+
+	$\Omega(n^{3})$
+	
+	E $f(n) \in \Omega(n^{3})$
+	
+	Logo, $T(n) \in \Theta(f(n)) = T(n) \in \Theta(n^3)$ para $n$ suficientemente grande.
+	
 	
 	\section{Referências}
 	Cormen, T.H.; Leiserson, C.E.; Rivest, R.L.; Stein, C. \textbf{Algoritmos: Teoria e Prática}. Tradução da 3a edição americana. Elsevier, 2012.   
