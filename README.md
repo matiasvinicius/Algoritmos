@@ -12,4 +12,6 @@ Os relatórios tratam de:
 
 * [Recursão](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/02_recursao.pdf): Indução matemática, problemas recursivos e equações de recorrência.
 
-* [Técnicas de Programação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/03_tecnicas_programacao.pdf): Divisão e Conquista, teorema mestre, tentativa e erro e algoritmos gulosos.
+* [Técnicas de Programação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/03_tecnicas_programacao.pdf): Divisão e Conquista, teorema mestre, tentativa e erro e algoritmos gulosos;
+
+* [Algoritmos de Ordenação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/04_ordenacao.pdf): Insertion Sort, Selection Sort, Bubble Sort, Mergesort, Quicksort, Counting Sort e Radix Sort.
