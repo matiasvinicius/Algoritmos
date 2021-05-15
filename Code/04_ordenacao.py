@@ -61,7 +61,22 @@ def selection_sort_rec(A, n):
 
     return selection_sort_rec(A, n-1)
 
+def bubble_sort(A, n):
+    i = n-1
+    
+    while i > 0:
+        j = 1
+        while j <= i:
+            if A[j-1] > A[j]:
+                temp = A[j-1]
+                A[j-1] = A[j]
+                A[j] = temp
+            j += 1
+        i -= 1
+    
+    return A
+
 if __name__ == "__main__":
     A = [4,4,52,-6,2,20]
 
-    print(selection_sort_rec(A, len(A)))
+    print(bubble_sort(A, len(A)))

@@ -261,7 +261,32 @@ $T(n) = \begin{cases}
 
 Levando à $T(n) = \frac{n^2-n}{2}$ e, tanto no melhor quanto no pior caso, à uma implementação $\in \Theta(n^2)$.
 
-	
+\section{Bubble Sort}
+
+O Bubble Sort é possivelmente o método de ordenação mais simples dos aqui estudados, contudo também o método que tem pior desempenho em aplicações reais. O algoritmo consiste em passar por todos os possíveis pares de elementos e comparar se um é maior que o outro. 
+
+\subsection{Implementação iterativa}
+
+O método bolha consiste apenas em uma troca de elementos em pares, uma das implementações iterativas possíveis está na Listing 5.
+
+\begin{lstlisting}[label=bubble_sort,caption= Bubble Sort iterativo]
+def bubble_sort(A, n):
+    i = n-1
+    
+    while i > 0:
+        j = 1
+        while j <= i:
+            if A[j-1] > A[j]:
+                temp = A[j-1]
+                A[j-1] = A[j]
+                A[j] = temp
+            j += 1
+        i -= 1
+    
+    return A
+\end{lstlisting}
+
+Sendo a comparação de interesse destacada em $A[j-1] > A[j]$, assim como no selection sort essa operação será realizada $n-1, n-2, ..., 2, 1$ vezes, mudando agora quais pares de elementos são comparados. A complexidade assintótica se mantém como $\Theta(n^2)$, pois a quantidade de operações segue a mesma soma de PA que resulta em $\frac{(n^2-n)}{2}$.
 	
 	
 \end{document}
