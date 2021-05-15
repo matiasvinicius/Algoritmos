@@ -46,7 +46,22 @@ def selection_sort(A):
 
     return A
 
+def selection_sort_rec(A, n):
+    if n == 1: return A
+    
+    max = n-1
+    for i in range(n):
+        if A[i] > A[max]:
+            max = i
+    
+    if max != n-1:
+        temp = A[max]
+        A[max] = A[n-1]
+        A[n-1] = temp
+
+    return selection_sort_rec(A, n-1)
+
 if __name__ == "__main__":
     A = [4,4,52,-6,2,20]
 
-    print(selection_sort(A))
+    print(selection_sort_rec(A, len(A)))

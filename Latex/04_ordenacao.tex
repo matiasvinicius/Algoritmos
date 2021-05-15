@@ -202,6 +202,11 @@ E como foi demonstrado no item \textbf{2.2}, $\frac{(n^2 - n)}{2} \in \mathcal{O
 $T(n) \in \mathcal{O}(n^2)$
 
 \section{Selection Sort}
+A ordenação por seleção parte do último elemento de um arranjo e compara com todos os anteriores para verificar se há um elemento maior que ele e, caso exista, capturar o maior de todo o subarranjo. O índice do maior valor do subarranjo é capturado e é comparado com o índice elemento que se partiu a ordenação (da direita para a esquerda, então, o último, penúltimo etc) para verificar se são iguais, caso forem iguais não há necessidade de trocar de posições pois ho maior elemento do subarranjo já está mais à direita do arranjo. Caso sejam diferentes, o algoritmo troca a posição do então último elemento do arranjo pelo maior elemento encontrado.
+
+\subsection{Implementação iterativa}
+
+Uma implementação em Python do algoritmo de seleção pode ser vista na Listing 3.
 
 \begin{lstlisting}[label=selection_sort,caption= Selection Sort iterativo]
 def selection_sort(A):
@@ -222,4 +227,41 @@ def selection_sort(A):
     return A
 \end{lstlisting}
 
+A operação de interesse aqui é a comparação entre cada elemento de um subarranjo com o máximo encontrado até então. Note que tanto o loop mais externo quanto o mais interno (que compreende a comparação $A[j] > A[max]$) são executados sempre a mesma quantidade de vezes para um mesmo $n$, implicando que o melhor e o pior caso sejam iguais.
+
+O loop externo é executado $n-1$ vezes e a quantidade de iterações do loop interno segue um progressão aritmética ($n-1$, $n-2$, ..., $2$, $1$). A soma dessas iterações é dada por $\frac{(n-1)*(n-1+1)}{2}$, logo, $\frac{n^2-n}{2}$ comparações para qualquer caso. Isso implica que esta implementação $\in \Theta(n^2)$
+
+\subsection{Implementação recursiva}
+
+Uma implementação recursiva do algoritmo de ordenação por seleção é exibido na Listing 4.
+
+\begin{lstlisting}[label=selection_sort_rec,caption= Selection Sort recursivo]
+def selection_sort_rec(A, n):
+    if n == 1: return A
+    
+    max = n-1
+    for i in range(n):
+        if A[i] > A[max]:
+            max = i
+    
+    if max != n-1:
+        temp = A[max]
+        A[max] = A[n-1]
+        A[n-1] = temp
+
+    return selection_sort_rec(A, n-1)
+\end{lstlisting}
+
+Partindo do caso base, sabe-se ordenar um arranjo de apenas um elemento (é o próprio arranjo). Para se ordenar para mais um elemento devem ser seguidas as diretrizes do algoritmo, como foi exibido acima. A equação de recorrência para esse ordenador (para o número de comparações entre elementos do arranjo) pode ser definida como: \\
+
+$T(n) = \begin{cases} 
+	0, \ n = 1\\
+	T(n-1) + n-1, \ n > 1
+\end{cases}$ \\
+
+Levando à $T(n) = \frac{n^2-n}{2}$ e, tanto no melhor quanto no pior caso, à uma implementação $\in \Theta(n^2)$.
+
+	
+	
+	
 \end{document}
