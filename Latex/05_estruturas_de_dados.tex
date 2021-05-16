@@ -1,0 +1,135 @@
+\documentclass[a4paper, twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{a4wide}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+	language=Python,
+	basicstyle=\small\sffamily,
+	numbers=left,
+	numberstyle=\tiny,
+	xleftmargin = 3em,
+	frame=tb,
+	columns=fullflexible,
+	showstringspaces=false,
+}
+
+\graphicspath{ {images/} }
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\title{Estruturas de Dados elementares}
+\author{Vinicius A. Matias}
+\date{\today}
+\begin{document}
+	\maketitle
+	
+	\section{Introdução}
+	Estruturas de Dados são elementos básicos da computação e essenciais para um desempenho eficiente na manipulação e armazenamento de dados durante a execução de um programa. Cada estrutura tem uma peculariedade, tornando o conhecimento e estudo delas necessário para identificar facilmente qual a melhor opção a se tomar enquanto se desenvolve um algoritmo.
+	
+	\section{Lista Linear Sequencial}
+	Uma lista linear consiste no conceito de que cada elemento tem um predecessor e um sucessor, com exceção do primeiro e último elemento de uma lista. A lista linear sequencial adiciona o fator de um elemento esta na sequencia do outro não somente na visão do programador, mas também na alocação de memória. Note que a maioria das linguagens de programação não permite uma manipulação direta da memória (pelo menos não de forma trivial), tais como Java e Python. A linguagem de programação C é muito relevante para quem tenha interesse de se manipular mais diretamente esses elementos. Para manter a consistência com os outros códigos desenvolvidos, as estruturas de dados serão implementadas também em Python, utilizando objetos.
+	
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Lista_Linear_Sequencial:
+    def __init__(self, max):
+        self.registro = [Registro] * max
+        self.n_elementos = -1
+        self.max = max
+\end{lstlisting}
+	
+A implementação estática da lista linear sequencial é utilizada para armazenar valores até um limite estabelecido, algo como um arranjo de tamanho pré definido (comum em linguagens como Java e C, mas não tanto em Python). O trecho de código anterior apresenta dois objetos. O primeiro é o Registro, consistindo nos objetos que serão amazenados na Lista (no caso, um campo para o id em inteiros e um campo para a chave em forma de string). A estrutura da lista $Lista\_Linear\_Sequencial$ armazena três atributos: o limite da lista $max$, a quantidade de elementos inseridos na lista $n\_elementos$ e um arranjo de $max$ elementos alocados sequencialmente na memória (fica implicita a alocação em Python) $registro$. Assim que a estrutura é instanciada são reservados $max$ espaços na memória para armazenar cada $registro$, mesmo que nunca sejam usados.
+
+Para inicializar a lista basta zerar a quantidade de elementos visíveis nela.
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (inicialização)]
+def inicializar_lista(self):
+        self.n_elementos = 0
+\end{lstlisting}
+
+A estrutura já armazena a quantidade de elementos adicionados na lista, então para obter o tamanho dela basta retornar este atributo.
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (tamanho)]
+def tamanho(self):
+         return self.n_elementos
+\end{lstlisting}
+
+Para imprimir a lista basta passar sequencialmente em todos os registros de 0 à $n\_elementos-1$
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (exibição)]
+def imprimir_lista(self):     
+        for i in range(self.n_elementos):
+            print("Elemento:", i, 
+            "| ID:", self.registro[i].id, 
+            "| Chave:", self.registro[i].chave)
+\end{lstlisting}
+
+Assim como na impressão, a busca passa por todos os elementos de 0 à $n\_elementos-1$ procurando um registro com a chave igual à uma passada por parâmetro.
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (busca)]
+def busca_sequencial(self, chave):
+        for i in range(self.n_elementos):
+            if self.registro[i].chave == chave:
+                return i
+        return -1
+
+\end{lstlisting}
+
+Para inserir elementos, partiremos da estratégia de se inserir em uma posição escolhida pelo usuário. Para realizar esse método será necessário primeiramente verificar se é possível inserir um elemento na lista (isto é, se não está cheia) e se a posição solicitada pelo usuário é válida. Havendo possibilidade de inserção, todos os elementos à direita da posição solicitada mudarão suas referências para o índice imediatamente posterior, e com isso é possível inserir o elemento na posição solicitada sem perder os outros elementos previamente inseridos. Note que ao fim da inserção também é necessário aumentar o atributo $n\_elementos$ em um.
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (inserção)]
+def inserir_registro(self, registro, posicao):
+        if (self.n_elementos == max or 
+        posicao < 0 or 
+        posicao > self.n_elementos:
+            return False
+
+        j = self.n_elementos
+        while j > posicao:
+            self.registro[j] = self.registro[j-1]
+            j -= 1
+        self.registro[posicao] = registro
+        self.n_elementos += 1
+        return True
+\end{lstlisting}
+
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (remoção)]
+def excluir_elemento(self, chave):
+        posicao = self.busca_sequencial(chave)
+        if posicao == -1: return False
+
+        j = posicao
+        while j < self.n_elementos-1:
+            self.registro[j] = self.registro[j+1]
+            j += 1
+        self.n_elementos -= 1
+        return True
+\end{lstlisting}
+
+Para excluir um elemento da lista por meio da chave (passada por parâmetro) utilizamos uma chamada ao método de busca sequencial para verificar se esta chave está na lista e, estando, podemos iniciar o processo de remoção. Como sabemos o índice que o elemento a ser excluído, nós passamos todos os elementos após essa posição para o índice anterior (move todo o arranjo posterior à posição em uma posição para a esquerda). Como movemos todo o arranjo à direita da posição em um índice à menos, a posição à ser excluida foi sobreposta pelo índice até então posterior, portanto perdendo a referência ao elemento e considerando-o excluído. Note que é necessário diminuir em um o atributo com o número de elementos da lista.
+
+A reinicialização dessa estrutura é igual à inicialização, consistindo apenas de zerar o número de elementos válidos. Note que os elementos anteriores continuam alocados na memória, mas a estrutura não consegue mais acessá-los.
+
+\begin{lstlisting}[label=lista_linear_seq,caption= Lista linear sequencial (reinicialização)]
+def reinicializar_lista(self):
+        self.n_elementos = 0
+\end{lstlisting}
+
+\end{document}
