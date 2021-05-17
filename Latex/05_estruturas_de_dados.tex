@@ -132,4 +132,68 @@ def reinicializar_lista(self):
         self.n_elementos = 0
 \end{lstlisting}
 
+\subsection{Lista Linear Sequencial Ordenada}
+Note que a busca de qualquer elemento na estrutura mencionada pode assumir complexidade $\mathcal{O}(n)$. Para realizar uma busca mais eficiente, é possivel tomar pelo menos duas abordagens.
+
+Uma delas é adicionar um campo sentinela no arranjo de registros, isto é, alocar espaço para mais um registro no arranjo visando realizar menos comparações na busca sequencial:
+
+\begin{lstlisting}[label=lista_linear_seq_sentinela,caption= Lista linear sequencial com sentinela (estrutura)]
+def busca_sentinela(self, id):
+        i = 0
+        self.registro[self.n_elementos].id = id
+        while self.registro[i].id != id: i += 1
+        if i == self.n_elementos: return -1        
+        return i
+\end{lstlisting}
+
+A alteração da estrutura permite a adição de um sentinela durante o processo de busca. Adicionar um sentinela quer dizer que aplicaremos o valor que estamos procurando na última posição válida durante a busca, ou seja, realizando um loop no intervalo $[0, n\_elementos]$, com o valor que procuramos na posição $n\_elementos$. O laço correrá com apenas uma condição (removendo um segundo \textit{if} da busca sequencial primária), pois sabe-se que eventualmente o resultado será verdadeiro.
+
+\begin{lstlisting}[label=lista_linear_seq_sentinela_busca,caption= Lista linear sequencial com sentinela (busca)]
+def busca_sentinela(self, id):
+        i = 0
+        self.registro[self.n_elementos].id = id
+        while self.registro[i].id != id: i += 1
+        if i == self.n_elementos: return -1        
+        return i
+\end{lstlisting}
+
+Ainda, a busca pode se tornar mais eficiente ainda se conseguirmos aplicar o método de busca binária. Para aplicá-lo, contudo, é necessário que os elementos estejam ordenados. Para tal, podemos modificar o método de inserção da lista linear sequencial para ordenar os elementos em cada adição. Uma das maneiras é aplicando as premissas do método de ordenação por inserção:
+
+\begin{lstlisting}[label=lista_linear_ord_inserir,caption= Lista linear sequencial ordenada (inserção)]
+def inserir_registro_ord(self, registro):
+  if self.n_elementos >= self.max:
+    return False
+
+  pos = self.n_elementos
+  while (pos > 0 and 
+  self.registro[pos-1].id > registro.id):
+    self.registro[pos] = self.registro[pos-1]
+  pos -= 1
+  self.registro[pos] = registro
+  self.n_elementos += 1
+  return True
+\end{lstlisting}
+
+Essa ordenação na inserção permite a utilização da busca binária na estrutura de dados criada.
+
+\begin{lstlisting}[label=lista_linear_busca_bin,caption= Lista linear sequencial ordenada (busca binária)]
+def busca_binaria(self, id):
+  esq = 0
+  dir = self.n_elementos-1
+     
+  while esq <= dir:
+    meio = int((esq+dir)/2)
+    if self.registro[meio].id == id: return meio 
+    elif self.registro[meio].id < id: 
+      esq = meio + 1
+    else:
+      dir = meio -1
+  
+  return -1 
+\end{lstlisting}
+
+Também é possível modificar o método de remoção para realizar a busca binária ao invés da busca sequencial para procurar o elemento na estrutura, contudo, o laço do deslocamento dos elementos domina a complexidade, podendo realizar até $max$ comparações.
+
+
+
 \end{document}
