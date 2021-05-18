@@ -194,6 +194,145 @@ def busca_binaria(self, id):
 
 Também é possível modificar o método de remoção para realizar a busca binária ao invés da busca sequencial para procurar o elemento na estrutura, contudo, o laço do deslocamento dos elementos domina a complexidade, podendo realizar até $max$ comparações.
 
+\section{Lista Ligada}
+Listas ligadas divergem da lista sequencial pois os elementos não são mais alocados sequencialmente, mas sim em endereços de memória dispersos. Essa implementação requer que cada elemento tenha uma referência, ao menos, ao próximo elemento da lista, e portanto devendo se atentar nessa troca de endereços durante inserções e remoções. Falaremos de três maneiras de se implementar uma lista ligada.
+
+\subsection{Implementação Estática}
+\begin{lstlisting}[label=lista_ligada_estat_estrutura,caption= Lista Ligada estática ordenada (estrutura)]
+MAX = 50
+
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, registro, prox):
+        self.reg = registro
+        self.prox = prox
+
+class Lista:
+    def __init__(self):
+        self.elemento = [Elemento] * MAX
+        self.inicio = None
+        self.dispo = None
+\end{lstlisting}
+
+
+Consiste em utilizar um arranjo para persistir os endereços de memória válidos para a estrutura. Nessa implementação o objeto $Registro$ se mantém inalterado, a Lista é alterada e é criado um novo objeto chamada $Elemento$. Cada registro está armazenado em um Elemento, e os elementos possuem além do registro um campo para identificar o índice que está o próximo elemento. A estrutura Lista mantém um arranjo de Elementos, o índice do primeiro elemento (caso haja elementos na lista) e um campo para identificar o próximo elemento disponível na lista (isto é, um índice do arranjo que não tenha nenhum elemento). É utilizada uma constante $MAX$, mas este valor poderia ser parte da estrutura da Lista também, mas não seria tão útil quanto na lista linear sequencial.
+
+A inicialização da lista passa por todos os índices do arranjo de elementos e cria um espaço do tamanho de um registro e adiciona a referência para o próximo elemento do arranjo (índice 0 tem como próximo 1, índice 1 tem como próximo 2 etc) no intervalo $[0,MAX-1]$ o último elemento válido (índice $MAX-1$) não pode ter referência à um próximo, pois não há mais espaço na lista. Como não há nenhum elemento inserido até então, o primeiro registro indicado por $self.inicio$ é nulo e o primeiro elemento disponível para inserção é o índice 0.
+
+\begin{lstlisting}[label=lista_ligada_estat_inicializacao,caption= Lista Ligada estática ordenada (inicialização)]
+def inicializar_lista(self):
+  for i in range(MAX-1):
+    self.elemento[i] = Elemento(Registro, i+1)
+  self.elemento[MAX-1].prox = None
+  self.inicio = None
+  self.dispo = 0
+\end{lstlisting}
+
+O tamanho pode ser obtido passando por todos os elementos até encontrar um inválido. Note que não armazenamos o tamanho da lista nessa implementação.
+\begin{lstlisting}[label=lista_ligada_estat_tamanho,caption= Lista Ligada estática ordenada (tamanho)]
+def tamanho(self):
+        i = self.inicio
+        tamanho = 0
+        while i != None:
+            tamanho +=1
+            i = self.elemento[i].prox
+        return tamanho
+\end{lstlisting}
+
+Para visualizar os registros de uma lista podemos seguir uma estratégia semelhante à do tamanho, isto é, de passar por todos os elementos.
+\begin{lstlisting}[label=lista_ligada_estat_exibicao,caption= Lista Ligada estática ordenada (exibição)]
+def imprimir_lista(self):
+  i = self.inicio
+  print("Lista de Registros")
+  while i != None:
+    print("ID:", self.elemento[i].reg.id,
+    "Chave:", self.elemento[i].reg.chave)
+    i = self.elemento[i].prox
+\end{lstlisting}
+
+Ainda que ordenada, não podemos realizar uma busca binária para otimizar a busca sendo que não temos como definir um "meio" da estrutura. Isso leva à implementação da busca sequencial por todos valores menores que um parâmetro.
+\begin{lstlisting}[label=lista_ligada_estat_busca,caption= Lista Ligada estática ordenada (busca)]
+def busca(self, id):
+    i = self.inicio
+    while (i != None and 
+    self.elemento[i].reg.id < id):
+        i = self.elemento[i].prox
+    if (i != None and 
+    self.elemento[i].reg.id == id):
+        return i
+\end{lstlisting}
+
+A inserção em uma Lista ligada estática vai requerer um método adicional: $obter\_no()$. Estamos considerando que a inserção será ordenada e não poderá haver dois id's iguais na mesma lista.
+
+\begin{lstlisting}[label=lista_ligada_estat_inserir,caption= Lista Ligada estática ordenada (inserção)]
+def obter_no(self):
+  resultado = self.dispo
+  if self.dispo != None:
+  	self.dispo = self.elemento[self.dispo].prox
+  return resultado
+
+def inserir(self, reg):
+  if (self.dispo == None): return False
+  ant = None
+  i = self.inicio
+  id = reg.id
+  while (i != None and self.elemento[i].reg.id < id):
+    ant = i
+    i = self.elemento[i].prox
+  if (i != None and self.elemento[i].reg.id == id): 
+  	return False
+  i = self.obter_no()
+  self.elemento[i].reg = reg
+  if ant == None:
+    self.elemento[i].prox = self.inicio
+    self.inicio = i
+  else:
+    self.elemento[i].prox = self.elemento[ant].prox
+    self.elemento[ant].prox = i
+  return True
+\end{lstlisting}
+
+Havendo espaço na lista ligada, percorreremos todos os elementos até econtrar um id maior ou igual ao que queremos inserir \textbf{ou} o último elemento válido da lista. No loop nós armazenamos o endereço do último elemento do laço \textbf{e} o endereço do elemento anterior à ele, isto é, o que aponta para ele. Na sequencia é feita uma comapração para verificar se o enderço do elemento é válido e se o id do registro é igual ao id solicitado para inclusão, se qualquer um dos testes forem verdadeiros, nós não inserimos o registro na lista. Estando tudo ok, chamamos a função de obter nó, retornando o próximo espaço do arranjo disponível para inserção, atualizando também o índice sem alocamento ($dispo$) para o próximo da lista (o que ele apontava). Adicionado, podemos verificar se o elemento à ser inserido é o primeiro da lista, e se for adicionamos na posição 0 e atualizamos o ponteiro $inicio$ do objeto Lista para a nova referência. Se o elemento precisa ser inserido em uma posição que não a primeira, mudamos o ponteiro do anterior (que estavamos armazenando desde o primeiro loop) para o novo registro, e o ponteiro de próximo do novo registro vai para o que era o próximo do anterior.
+
+\begin{lstlisting}[label=lista_ligada_estat_remover,caption= Lista Ligada estática ordenada (remoção)]
+def devolver_no(self, posicao):
+  self.elemento[posicao].prox = self.dispo
+  self.dispo = posicao
+
+def excluir(self, id):
+  ant = None
+  i = self.inicio
+  while (i != None and 
+  self.elemento[i].reg.id < id):
+    ant = i
+    i = self.elemento[i].prox
+  if (i == None or self.elemento[i].reg.id != id): 
+  	return False
+  if ant == None:
+    self.inicio = self.elemento[i].prox
+  else: 
+    self.elemento[ant].prox = self.elemento[i].prox        
+  self.devolver_no(i)
+  return True
+\end{lstlisting}
+
+A exclusão de um elemento em uma lista ligada ordenada segue o mesmo paradigma que a inserção, notando que quando encontrado um índice para ser removido deva ser perdida a referência à esse elemento, podendo ser feita por meio do ponteiro anterior ao elemento a ser removido começar a apontar ao que era o próximo do elemento a ser excluído. Note que também é necessário atualizar os nós disponíveis, e isso pode ser feito pelo método $develover\_no()$, levando o índice do elemento excluído ao atributo $dispo$ da lista.
+
+A reinicialização da estrutura deve limpar os registros armazenados e atualizar os atributos para uma lista totalmente nova, ou seja, chamando o método de inicialização novamente.
+
+\begin{lstlisting}[label=lista_ligada_estat_reiniciar,caption= Lista Ligada estática ordenada (reinicialização)]
+def reinicializar_lista(self):
+        self.inicializar_lista()
+\end{lstlisting}
+
+\subsection{Implementação Dinâmica}
+
+
+\subsection{Implementação Circular com nó-cabeça}
 
 
 \end{document}
