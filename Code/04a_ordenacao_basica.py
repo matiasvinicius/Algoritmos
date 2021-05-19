@@ -76,7 +76,17 @@ def bubble_sort(A, n):
     
     return A
 
+def bubble_sort_rec(A, n):
+    i = 1
+    while i < n:
+        if A[i] < A[i-1]:
+            temp = A[i]
+            A[i] = A[i-1]
+            A[i-1] = temp
+        i += 1
+    return bubble_sort(A, n-1)
+
 if __name__ == "__main__":
     A = [4,4,52,-6,2,20]
 
-    print(bubble_sort(A, len(A)))
+    print(bubble_sort_rec(A, len(A)))

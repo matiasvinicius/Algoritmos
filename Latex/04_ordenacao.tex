@@ -288,5 +288,75 @@ def bubble_sort(A, n):
 
 Sendo a comparação de interesse destacada em $A[j-1] > A[j]$, assim como no selection sort essa operação será realizada $n-1, n-2, ..., 2, 1$ vezes, mudando agora quais pares de elementos são comparados. A complexidade assintótica se mantém como $\Theta(n^2)$, pois a quantidade de operações segue a mesma soma de PA que resulta em $\frac{(n^2-n)}{2}$.
 	
-	
+\subsection{Implementação recursiva}
+
+\begin{lstlisting}[label=bubble_sort_rec,caption= Bubble Sort recursivo]
+def bubble_sort_rec(A, n):
+    i = 1
+    while i < n:
+        if A[i] < A[i-1]:
+            temp = A[i]
+            A[i] = A[i-1]
+            A[i-1] = temp
+        i += 1
+    return bubble_sort(A, n-1)
+\end{lstlisting}
+
+Ainda que não seja comum, o bubble sort pode ser implementado recursivamente, trocando o laço mais externo por um chamada à própria função para $n-1$. A equação de recorrência é a mesma do selection sort recursivo, levando à uma complexidade $\mathcal{O}(n^2)$.
+
+
+\section{Merge Sort}
+O Merge Sort é um método de ordenação que utliza a técnica de Divisão e Conquista também chamado de ordenação por intercalação. Ele parte da hipótese de indução forte de que sabemos ordenar um conjunto de elementos no intevalo $[1,n]$. A ordenação é feita dividindo o arranjo no meio para gerar dois subarranjos (esquerdo e direito). Para cada subarranjo será feito o mesmo processo de dividir entre esquerdo e direito até uma chamada para um arranjo de apenas um elemento, neste caso armazenaremos o valor e poderemos partir para a chamada do lado direito. Após algumas chamadas recursivas, teremos um elemento do arranjo esquerdo e um elemento do arranjo direito. Estes dois serão passados para a função merge, que será responsável por comparar os dois elementos e ordená-los. 
+
+Esse processo cresce conforme a pilha é desempilhada, havendo comparações dos elementos do arranjo esquerdo com o direito até um limite de $n/2$ comparações, que é o caso da primeira chamada recursiva realizada. O Merge Sort permite que ordenemos arranjos "da esquerda" e "da direita", e isso permite que na próxima comparação, os dois subarranjos passados para o merge estejam ordenados, cabendo à cada chamada do merge comparar o novo esquerdo e direito e ordená-los. 
+
+O Merge Sort normalmente é implementado em duas funções: uma para a ordenação de dois arranjos diferentes e gerar um único ($merge()$) e uma para realizar as chamadas recursivas para dividir os arranjos ($merge\_sort()$).
+
+\begin{lstlisting}[label=merge_sort,caption= Função merge sort]
+def merge_sort(A):
+    if len(A) > 1:
+        meio = len(A) // 2
+        esq = merge_sort(A[:meio])
+        dir = merge_sort(A[meio:])
+        A = merge(esq, dir)
+    return A
+\end{lstlisting}
+
+Diferentes implemementações podem ser obtidas para retornar o mesmo resultado. Muitos materias utilizam variáveis de inicio e fim para gerir o meio do arranjo, e sendo passadas nas chamadas recursivas. Dependendo das estruturas que a linguagem fornece, a implementação pode ser mais sucinta, como é o caso de Python. O pseudocódigo do livro Algoritmos (Cormen et al.), já mencionados em outro relatório fornece um pseudocódigo do Merge Sort que tipicamente rege as implementações em Java e C. Em Python podemos utilizar os recursos da linguagem para pegar os índices que separam o arranjo esquerdo e o arranjo direito quando temos o meio calculado.
+
+\begin{lstlisting}[label=merge,caption= Função merge]
+def merge(esq, dir):
+    i, j = 0, 0
+    ordenados = list()
+
+    while i < len(esq) and j < len(dir):
+        if esq[i] <= dir[j]:
+            ordenados.append(esq[i])
+            i += 1
+        else:
+            ordenados.append(dir[j])
+            j += 1
+    
+    if i < len(esq):
+        ordenados += esq[i:]
+    
+    elif j < len(dir):
+        ordenados += dir[j:]
+    
+    return ordenados
+\end{lstlisting}
+
+O merge funciona verificando o arranjo esquerdo e o direito para identificar quais valores são menores (do arranjo esquerdo ou do direito) e até quando. Os valores são armazenados em uma lista quer será retornada ao no método $merge\_sort()$. Também são verificados se houveram valores que não foram inseridos na comparação, ou seja, os valores do arranjo esquerdo ou direito que eram maiores que o maior valor do outro subarranjo.
+    
+Para analisar a complexidade do merge sort precisamos notar que ele realiza duas chamadas recursivas para $n/2$ e uma chamada ao merge para cada $n$. Considerando a operação de interesse a comparação $esq[i] <= dir[j]$ do laço da função merge, teremos um custo para essa função de $n-1$ no pior caso e $n/2$ no melhor caso. A equação de recorrência para o pior caso é:
+
+$T(n) = \begin{cases} 
+	0, \ n \leq 1\\
+	2T(n/2) + n-1, \ n > 1
+\end{cases}$ \\
+
+E calculando essa equação de divisão e conquista pelo Teorema Mestre (cláusula 2) descobrimos que a complexidade assintótica do merge sort para todos os casos  $\in \Theta(n*log n)$. Vale lembrar que para a generalização é necessário calcular a equação de recorrência para o melhor caso também, que terá a mesma complexidade que o pior caso.
+
+É impotante observar que ainda que a complexidade do Merge Sort seja menor que o dos outros estudados até então, esse algoritmo tem um custo de criar novos arranjos para manipular os elementos durante a execução do método.
+
 \end{document}
