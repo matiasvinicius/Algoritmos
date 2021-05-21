@@ -312,7 +312,7 @@ Esse processo cresce conforme a pilha é desempilhada, havendo comparações dos
 
 O Merge Sort normalmente é implementado em duas funções: uma para a ordenação de dois arranjos diferentes e gerar um único ($merge()$) e uma para realizar as chamadas recursivas para dividir os arranjos ($merge\_sort()$).
 
-\begin{lstlisting}[label=merge_sort,caption= Função merge sort]
+\begin{lstlisting}[label=merge_sort,caption= Merge sort]
 def merge_sort(A):
     if len(A) > 1:
         meio = len(A) // 2
@@ -324,7 +324,7 @@ def merge_sort(A):
 
 Diferentes implemementações podem ser obtidas para retornar o mesmo resultado. Muitos materias utilizam variáveis de inicio e fim para gerir o meio do arranjo, e sendo passadas nas chamadas recursivas. Dependendo das estruturas que a linguagem fornece, a implementação pode ser mais sucinta, como é o caso de Python. O pseudocódigo do livro Algoritmos (Cormen et al.), já mencionados em outro relatório fornece um pseudocódigo do Merge Sort que tipicamente rege as implementações em Java e C. Em Python podemos utilizar os recursos da linguagem para pegar os índices que separam o arranjo esquerdo e o arranjo direito quando temos o meio calculado.
 
-\begin{lstlisting}[label=merge,caption= Função merge]
+\begin{lstlisting}[label=merge,caption= Merge]
 def merge(esq, dir):
     i, j = 0, 0
     ordenados = list()
@@ -358,5 +358,70 @@ $T(n) = \begin{cases}
 E calculando essa equação de divisão e conquista pelo Teorema Mestre (cláusula 2) descobrimos que a complexidade assintótica do merge sort para todos os casos  $\in \Theta(n*log n)$. Vale lembrar que para a generalização é necessário calcular a equação de recorrência para o melhor caso também, que terá a mesma complexidade que o pior caso.
 
 É impotante observar que ainda que a complexidade do Merge Sort seja menor que o dos outros estudados até então, esse algoritmo tem um custo de criar novos arranjos para manipular os elementos durante a execução do método.
+
+\section{Quick Sort}
+O quick sort segue a mesma hipótese de indução forte que o merge sorte (sabemos ordenar um novo elemento em qualquer arranjo até então ordenado). O método consiste em dividir o arranjo em uma partição central onde todos os elementos à esquerda dela são menores que esse valor e à direita são maiores. O processo é repetido até termos apenas um elemento para procurar a partição, e então é realizada a volta das chamadas recursivas. O método de ordenação é desenvolvido utilizando duas funções:
+
+\begin{lstlisting}[label=quick_sort,caption= Quick Sort]
+def quick_sort(A, ini, fim):
+    if ini < fim:
+        p = particao(A, ini, fim)
+        quick_sort(A, ini, p-1)
+        quick_sort(A, p+1, fim)
+    return A
+\end{lstlisting}
+
+Como pode ser visto, há um processo de divisão custoso (chamada à função partição) e um processo de conquista pela volta às chamadas recursivas. Não há um custo para junção, como visto no merge sort. A função em questão realiza as chamadas recursivas para o mesmo arranjo à esquerda da partição e à direita dela, atualizando diretamente no arranjo passado na entrada. A função $particao()$ que realiza a magia é mostrada na sequência.
+
+Para identificar o elemento que divide o arranjo entre maiores e menores que um valor é chamada a função de partição e retornado o tal elemento da divisão, chamado de pivô. Com um arranjo qualquer nós começamos definindo os índices \textbf{válidos} que limitarão o inicio e fim do processo de comparação no arranjo (diferente do merge sort, os índice de fim do arranjo deve ser uma posição valida, e não o tamanho). 
+
+Enquanto os índices forem diferentes haverá um processo de comparar os elementos à esquerda do arranjo com o pivô para  verificar se são menores que ele, e a mesma coisa para os elmeentos à direita serem maiores. Caso à esquerda seja realmente menor, está tudo certo por enquanto e vamos para a próxima posição. Caso o elemento à esquerda seja maior que o pivô (isto é, deve ir para a direita do arranjo) devemos verificar se o elemento à direita é maior ou menor que o pivô. Se o elemento à direita (j) for maior, ele está na posição correta e passamos a comparação do elemento à esquerda (i) para o elemento à esquerda do mais à direita (j-1). Se o da  esquerda for maior que o pivô e o à direita for menor, trocamos eles de lugar e atualizamos seus índices. Ao fim é criado atualizado o pivô como o elemento que ficou ao meio da "ordenação" atual. Esse algoritmo de partição também é chamado de partição de Hoare.
+
+\begin{lstlisting}[label=quick_sort,caption= Partição]
+def particao(A, ini, fim):
+    pivo = A[fim]
+    i = ini
+    j = fim - 1
+
+    while i <= j:
+        if A[i] <= pivo:
+            i += 1
+        elif A[j] > pivo:
+            j -= 1
+        else:
+            aux = A[i]
+            A[i] = A[j]
+            A[j] = aux
+            i += 1
+            j -= 1
+    
+    A[fim] = A[i]
+    A[i] = pivo
+    return i
+\end{lstlisting}
+
+Essa implementação da partição tem como melhor caso para o número de comparações entre o pivô e um elmento do arranjo duas possibilidades. A primeira é quando o pivô é o maior elemento do subarranjo (realiza apenas a primeira comparação do método partição), e a segunda é quando em uma passada do laço realiza as duas comparações e cai no $else$, isto é, quando deve haver uma troca e, portanto, avança tanto do lado esquerdo quanto do lado direito do subarranjo (pula uma das comparações que poderiam ser feitas). Para o primeiro melhor caso serão feitas $n-1$ comparações, e para o segundo caso serão feitas também $2(n-1)/2 = n-1$ comparações.
+
+O pior caso é quando o primeiro if é verdadeiro e o segundo é falso, ou seja, quando o pivô é menor que todos os elementos à esquerda e menor que todos à direita (logo, o menor elemento do subarranjo). Realiza-se nesse caso $2n-2$ comparações. Tanto no melhor quanto no pior caso, $T(n) \in \Theta(n)$
+
+O quick sort como um todo tem uma equação de recorrência para o melhor caso definida como:
+
+$T(n) = \begin{cases} 
+	0, \ n \leq 1\\
+	2T(n/2) + n-1, \ n > 1
+\end{cases}$ \\
+Com $T(n) \in \Theta(n* \log n)$ \\
+
+E como pior caso:
+
+$T(n) = \begin{cases} 
+	0, \ n \leq 1\\
+	T(n-1) + 2n-2, \ n > 1
+\end{cases}$ \\
+Com $T(n) \in \Theta(n^2)$\\
+
+Uma prova mais longa pode provar que o caso médio do quick sort $\in \Theta(n* log n)$
+
+\section{Heap }
 
 \end{document}
