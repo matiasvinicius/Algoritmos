@@ -422,6 +422,89 @@ Com $T(n) \in \Theta(n^2)$\\
 
 Uma prova mais longa pode provar que o caso médio do quick sort $\in \Theta(n* log n)$
 
-\section{Heap }
+\section{Heap Sort}
+Heaps em computação são utilizados como um espaço de memória para armazenar valores e como uma estrutura de dados para uma regra particular. No Heaps sort, essa estrutura é auxiliar ao método. A ordenação desse método utiliza indução fraca (a mesma do selection sort), mas a estrutura Heap utiliza indução forte. A organização do Heap permite otimizar a ordenação no método, contrariando a ordenação por seleção. O Heap vai simular uma árvore binária completa em um arranjo.
+
+Cada posição do arranjo representa um nó, todos os níveis são completos, com exeção das folhas. Para encontrar as relações de um nó na posição $i$ segue-se o método:
+
+$PAI: \lfloor(i-1)/2 \rfloor $
+
+$ESQUERDA: 2*i + 1$
+
+$DIREITA: 2*i + 2 $
+
+Aqui utilizaremos o conceito de Heap máximo, onde um nó pai é maior ou igual que seus filhos. Em um heap de altura $h$ o número de nós varia de $2^h \leq n \leq 2^{h+1}$, sendo a altura definida como a distância até as folhas para um nó, portanto a altura de um heap e n nós é $\lfloor \log2 n \rfloor$.
+
+A implementação do Heap será baseada em duas funções. A primeira é uma função recursiva que verifica se um nó pai é maior que seus filhos à esquerda e à direita. Caso seja, trocam-se de valores e se faz a verificação novamente (por recursão para o novo nó pai). 
+
+\begin{lstlisting}[label=refazer_heap,caption= Manutenção do Heap]
+def refazer_heap_max(A, i_pai, n_heap):
+    esq = 2*i_pai + 1 
+    dir = 2*i_pai + 2
+
+    if esq < n_heap and A[esq] > A[i_pai]:
+        maior = esq
+    else:
+        maior = i_pai
+    
+    if dir < n_heap and A[dir] > A[maior]:
+        maior = dir
+    
+    if maior != i_pai:
+        aux = A[maior]
+        A[maior] = A[i_pai]
+        A[i_pai] = aux
+        refazer_heap_max(A, maior, n_heap)
+\end{lstlisting}
+
+Essa função será passada para a construção do Heap (máximo). O primeiro nó pai é o que está no meio do arranjo, e a partir daí é chamado o método anterior para rearranjar o heap, ou seja, deixar um nó pai maior que seus filhos. Esse processo vai ser realizado até o primeiro elemento do arranjo ($n/2$ iterações). 
+
+\begin{lstlisting}[label=construir_heap,caption= Construção do Heap]
+def construir_heap_max(A):
+    n_heap = len(A)
+    i = (n_heap // 2) - 1
+    while i >= 0:
+        refazer_heap_max(A, i, n_heap)
+        i -= 1
+\end{lstlisting}
+
+Com o Heap implementado, podemos utilizar o Heap Sort para ordenar os valores de uma lista / arranjo. O método se baseia no Selection Sort, mas a estrutura do heap influencia em uma redução na quantidade de iterações necessárias, logo, na complexidade assintótica.
+
+\begin{lstlisting}[label=heap_sort,caption= Heap Sort]
+def heap_sort(A):
+    construir_heap_max(A)
+    n_heap = len(A)
+    i = len(A) - 1
+    while i > 0:
+        aux = A[0]
+        A[0] = A[i]
+        A[i] = aux
+        n_heap -= 1
+        i -= 1
+        refazer_heap_max(A, 0, n_heap)
+\end{lstlisting}
+
+A operação de interesse para a análise da complexidade assintótica do Heap Sort é a comparação entre elementos do arranjo, passo esse que acontece no método $\texttt{refazer\_heap\_max()}$. As comparações $\texttt{A[esq]>A[i\_pai]}$ e $\texttt{A[dir]>A[maior]}$ acontecem, no pior caso, em  $2/3$ dos elementos, apenas uma vez. O pior caso geral a recursão acontece para metade dos elementos, fazendo duas verificações por vez.\\
+
+$T(n) = \begin{cases} 
+	0, \ n \leq 1\\
+	T(n/2) + 2, \ n > 1
+\end{cases} \in \mathcal{O}(\log n)$ \\
+
+A função $\texttt{construir\_heap\_max()}$ pode ser reformulada como uma função recursiva para fazer uma equação de recorrência. Neste caso seria feita uma chamada à esquerda e outra à direita, ambas para metade dos elementos. O custo seria acrescido pelas comparações do método de manutenção do heap.
+
+$T(n) = \begin{cases} 
+	0, \ n \leq 1\\
+	2T(n/2) + \mathcal{O}(\log n), \ n > 1
+\end{cases} \\ T(n) \in \Theta(n)$ \\
+
+O Heap Sort tem o custo $\Theta(n)$ para criar o Heap e o custo $\mathcal{O}(\log n)$ para realizar a manutenção do Heap. Assim, o número de operações $n\_op$ pode ser identificado como:
+
+$n\_op \in \Theta(n) + \mathcal{O}(\log n)$, e como $\Theta(n)$ cresce com $\mathcal{O}(n)$:
+
+$n\_op \in \mathcal{O}(n) + \mathcal{O}(\log n)$
+
+$n\_op \in \mathcal{O}(n \log n)$
+
 
 \end{document}
