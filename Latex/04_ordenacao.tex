@@ -507,4 +507,33 @@ $n\_op \in \mathcal{O}(n) + \mathcal{O}(\log n)$
 $n\_op \in \mathcal{O}(n \log n)$
 
 
+\section{Couting Sort}
+A ordenação por comparações (algoritmos vistos até aqui) não conseguem ordenar um arranjo em tempo linear. Para tal é importante buscar adaptações ao método de pensar a ordenação de arranjos e assim buscar algum método de complexidade $\mathcal{O}(n)$. Uma das possibilidades é por meio da ordenação por contagem.
+
+O Couting Sort deve receber, além do arranjo, um parâmetro adicional $k \in \mathcal{O}(n)$, isto é, os $n$ elementos de um arranjo estão no intervalo $0 \leq < k$. É possível realizar modificações para o Couting Sort aceitar valores negativos (como referenciando eles ao fim do arranjo), mas esse método não é focado para esses casos. A ordenação por contagem consegue ter complexidade linear, mas a restrição de que os elementos estejam no intervalo entre 0 e n tipicamente deixa o método para contextos bem específicos, mas quando entram neste escopo acabam se tornando interessantes. 
+
+Outro problema desse algoritmo é que se torna necessário alocar em memória espaço para todos elementos possíveis de se entrar no arranjo ordenado (entre 0 e k), mesmo que não sejam utilizados.
+
+Um ponto positivo da implementação é que ela é estável, isto é, elementos de mesmo valor que aparecem em posições diferentes no arranjo original são ordenados na mesma sequência.
+
+\begin{lstlisting}[label=Couting Sort,caption= Couting Sort]
+def couting_sort(A, k):
+    n = len(A)
+    ordenado = [None] * n
+    quantidade = [0] * k
+
+    for j in range(n): 
+        quantidade[A[j]] += 1
+    for i in range(1, k): 
+        quantidade[i] += quantidade[i-1]
+    for j in reversed(range(0, n)):
+        ordenado[quantidade[A[j]]-1] = A[j]
+        quantidade[A[j]] -= 1
+
+    return ordenado
+\end{lstlisting}
+
+A ordenação por contagem não realiza nenhuma comparação, logo, a operação de interesse é a de atribuiçãod de valores. Analisando o algoritmo podemos perceber que a quantidade de operações de interessse $\in \Theta(n+k)$ e pela restrição $k \in \mathcal{O}(n)$, que o método ideal utiliza, o algoritmo Couting Sort tem crescimento assintótico $\mathcal{O}(n)$ .
+
+
 \end{document}
