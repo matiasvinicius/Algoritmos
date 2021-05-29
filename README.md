@@ -14,6 +14,10 @@ Os relatórios tratam de:
 
 * [Técnicas de Programação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/03_tecnicas_programacao.pdf): Divisão e Conquista, teorema mestre, tentativa e erro e algoritmos gulosos;
 
+<<<<<<< HEAD
 * [Algoritmos de Ordenação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/04_ordenacao.pdf): Insertion Sort, Selection Sort, Bubble Sort, Mergesort, Quicksort, Heap Sort, Counting Sort e Radix Sort;
+=======
+* [Algoritmos de Ordenação](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/04_ordenacao.pdf): Insertion Sort, Selection Sort, Bubble Sort, Mergesort, Quicksort, Heap Sort, Counting Sort e Radix Sort;
+>>>>>>> 3df55f4c3627c2188065966f11157b944a34ed84
 
 * [Estruturas de Dados Elementares](https://github.com/matiasvinicius/Algorithms-and-Data-Structures/blob/main/PDF/05_estruturas_de_dados.pdf): Lista sequencial, lista ligada, pilha, fila, deque e matrizes esparsas.
