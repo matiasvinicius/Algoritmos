@@ -44,5 +44,8 @@ def heap_sort(A):
 
 if __name__ == "__main__":
     A = [12,5,9,3,14,0,-6,5,17,13,3,50]
+    B=  [1,2,3,4,5,6,7,8]
+    construir_heap_max(B)
+    print(B)
     heap_sort(A)
     print(A)
