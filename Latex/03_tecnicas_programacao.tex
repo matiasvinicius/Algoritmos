@@ -107,7 +107,7 @@
 	$T(n) \in \Theta(n^2)$ \\
 	
 	
-	\textbf{I - $T(n) = 4T(n/2)+ n^3$} \\
+	\textbf{II - $T(n) = 4T(n/2)+ n^3$} \\
 	
 	$a = 4$;
 	$b = 2$;
@@ -146,6 +146,14 @@
 	E $f(n) \in \Omega(n^{3})$
 	
 	Logo, $T(n) \in \Theta(f(n)) = T(n) \in \Theta(n^3)$ para $n$ suficientemente grande.
+	
+	\section{Tentativa e Erro}
+	Essa técnica de programação consiste em buscar exaustivamente as possibilidades que um problema permite, gerando uma árvore de estados à se chegar mediante uma ação, chegando à solução ótima em algum momento. O tempo para chegar à melhor solução, contudo, não costuma ser viável.
+	
+	Esses algoritmos também dependem de uma condição de parada, que costuma ser chegar na solução ótima. Cada passo de um algoritmo de backtracking (tentativa e erro) costuma ser feita por recursão, pois em uma falha encontrada, é simples de se chegar no estado anterior e tentar outra possibilidade (daí o termo backtracking). É muito comum que as soluções de tentativa e erro tenham complexidade exponencial.
+	
+	\section{Algoritmos Gulosos}
+	Essa classe de algoritmos seguem uma ideia parecida aos algoritmos de tentativa e erro, mas quando se deparam com uma escolha de ações à serem feitas, algoritmos gulosos seguem uma estratégia para escolher a opção mais promissora para resolver o problema. A heurística que permite diferir entre uma opção e outra é o critério guloso (uma decisão localmente ótima).
 	
 	
 	\section{Referências}
