@@ -516,7 +516,7 @@ Outro problema desse algoritmo é que se torna necessário alocar em memória es
 
 Um ponto positivo da implementação é que ela é estável, isto é, elementos de mesmo valor que aparecem em posições diferentes no arranjo original são ordenados na mesma sequência.
 
-\begin{lstlisting}[label=Couting Sort,caption= Couting Sort]
+\begin{lstlisting}[label=couting_sort,caption= Couting Sort]
 def couting_sort(A, k):
     n = len(A)
     ordenado = [None] * n
@@ -536,6 +536,39 @@ def couting_sort(A, k):
 A ordenação por contagem não realiza nenhuma comparação, logo, a operação de interesse é a de atribuiçãod de valores. Analisando o algoritmo podemos perceber que a quantidade de operações de interessse $\in \Theta(n+k)$ e pela restrição $k \in \mathcal{O}(n)$, que o método ideal utiliza, o algoritmo Couting Sort tem crescimento assintótico $\mathcal{O}(n)$ .
 
 \section{Radix Sort}
+
+O último método de ordenação à ser analisado é o Radix Sort, ou ordenação por raíz. Esse método de ordenação linear baseia-se na extração de cada parte de um valor (normalmente uma string) a partir do dígito menos significativo (de trás pra frente). Para cada um dos dígitos será chamado um ordenador com complexidade $\mathcal{O}(n)$, visto que não faz sentido utilizar um ordenador de custo não linear em um ordenador que visa custo linear. Aqui exemplificaremos o uso do Radix Sort pela ordenação de strings de tamanho fixo com auxílio dos valores unicode de seus dítigos (limitando o úniverso aos primeiros 256 valores unicode). O método usará como ordenador uma adaptação do couting sort que ordena strings.
+
+\begin{lstlisting}[label=radix_sort,caption= Radix Sort para strings de tamanho fixo]
+def radix_sort(A, n_digitos):
+    n_unicode = 256
+    for i in reversed(range(n_digitos)):
+        A = couting_sort_str(A, i, n_unicode)
+        print(A)
+    return 0
+\end{lstlisting}
+
+O método recebe o vetor de strings, com cada entrada de tamanho $n\_digitos$. Para cada dígito (do menos significativo ao mais significativo) é chamado o couting sort para ordenar a string pelos valores unicode.
+
+\begin{lstlisting}[label=couting_sort_str, caption= Couting Sort para valores unicode de caracteres]
+def couting_sort_str(A, indice, k):
+ n = len(A)
+ ordenado = [''] * n
+ quantidade = [0] * k
+
+ for j in range(n): 
+  quantidade[ord(A[j][indice])] += 1
+ for i in range(1, k): 
+  quantidade[i] += quantidade[i-1]
+ for j in reversed(range(0, n)):
+  ordenado[quantidade[ord(A[j][indice])]-1] = A[j]
+  quantidade[ord(A[j][indice])] -= 1
+ return ordenado
+\end{lstlisting}
+
+O comando \texttt{ord} em python retorna o valor unicode de um caractere. O método acima permite executar o couting sort sobre caracteres de uma string e retornar o arranjo ordenado com base em um dos dígitos das strings.
+
+A complexidade do Radix Sort, portanto, é dependente da complexidade do ordenador secundário chamado. Utilizando um ordenador de complexidade $\Theta(n)$ como o Couting Sort (considerando, obviamente, que suas restrições para tamanho de $k$ tenham sido obedecidas), a complexidade do Radix Sort será $\Theta(d*\Theta(n))$, onde $d$ é a quantidade de divisões feitas no radix sort (no exemplo dado, seria a quantidade de dígitos de uma string). Se, e somente se $d$ for um valor independente de $n$, poderemos considerar $d \in \Theta(1)$, e assim o Radix Sort terá complexidade $\Theta(n)$.
 
 
 
