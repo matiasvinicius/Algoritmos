@@ -757,8 +757,70 @@ def reinicializar(self):
 \end{lstlisting}
 
 \section{Fila}
+Filas segue o princípio First In First Out, isto é, os elementos que foram inseridos primeiramente também serão removidos primeiramente, seguindo a ordem em que foram inseridos.
 
 \subsection{Implementação estática}
+
+Uma das maneiras de se implementar uma fila de maneira estática é, além de utilizar um arranjo de registros com tamanho pré-definido, utilizar um campo para identificar o início dos elementos válidos no arranjo e a quantidade de elementos no arranjo. O campo início é necessário pois, ainda que possamos começar a inserção pela posição 0, conforme os elementos são excluídos devemos ir uma posição para frente para considerar os elementos válidos, não sendo mais a posição 0 a com o primeiro registro válido.
+\begin{lstlisting}[label=fila_estat_estrutura, caption= Fila estática (estrutura)]
+MAX = 50
+
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id,
+        self.chave = chave
+
+class Fila:
+    def __init__(self):
+        self.reg = [Registro] * MAX
+        self.inicio = 0
+        self.n_elementos = 0
+\end{lstlisting}
+
+Como temos um campo para o número de elementos, para retornar o tamanho da fila basta consultá-lo.
+\begin{lstlisting}[label=fila_estat_tamanho, caption= Fila estática (tamanho)]
+def tamanho(self):
+    return self.n_elementos
+\end{lstlisting}
+
+A exibição dos elementos deverá passar por cada posição válida do arranjo e imprimir os atributos dos registros (id e chave nesse caso). Para encontrar as posições válidas de um arranjo, deveremos tomar o cuidado de a estrutura ser "circular" com os índices, e para gerarmos apenas índices entre \texttt{0} e\texttt{MAX-1} devemos tirar o módulo da posição corrente mais a posição posterior para impedir que estouremos a fila.
+\begin{lstlisting}[label=fila_estat_imprimir, caption= Fila estática (exibição)]
+def imprimir(self):
+    i = self.inicio
+    print("Fila")
+    for _ in range(self.tamanho()):
+        print("ID:", self.reg[i].id,
+        "Chave:", self.reg[i].chave)
+        i = (i + 1) % MAX
+    \end{lstlisting}
+
+A inserção vai consistir em adicionar no final da fila, por isso devemos tomar o cuidado de essa posição estar entre 0 e MAX-1, podendo ser derivada do módulo MAX na soma entre a posição de início da fila e o total de elemntos até o momento.
+\begin{lstlisting}[label=fila_estat_inserir, caption= Fila estática (inserção)]
+def inserir(self, reg):
+    if self.n_elementos == MAX:
+        return False
+    i = (self.inicio + self.n_elementos) % MAX
+    self.reg[i] = reg
+    self.n_elementos = self.n_elementos + 1
+    return True
+\end{lstlisting}
+
+A remoção deve eliminar a referência para o então registro inicial da fila, podendo ser feito atualizando o inicio para a próxima posição válida (inicio + 1) mod MAX.
+\begin{lstlisting}[label=fila_estat_excluir, caption= Fila estática (remoção)]
+def excluir(self):
+    if self.n_elementos == 0: 
+        return False
+    self.inicio = (self.inicio + 1) % MAX
+    self.n_elementos = self.n_elementos - 1
+    return True
+\end{lstlisting}
+
+A reinicialização consiste em atualizar as referências de início e total de elementos para 0, como feito na inicialização.
+\begin{lstlisting}[label=fila_estat_reiniciar, caption= Fila estática (reinicialização)]
+def reinicializar(self):
+    self.inicio = 0
+    self.n_elementos = 0
+\end{lstlisting}
 
 \subsection{Implementação dinâmica}
 
