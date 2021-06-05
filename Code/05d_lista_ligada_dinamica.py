@@ -46,7 +46,7 @@ class Lista:
                 return anterior, atual
             anterior = atual
             atual = atual.prox
-        return None, None
+        return anterior, None
 
     def inserir(self, reg):
         chave = reg.chave
@@ -75,7 +75,6 @@ class Lista:
     #irá removê-los em algum momento
     def reinicializar_lista(self):
         self.inicio = None
-        return 0
 
 if __name__ == "__main__":
     l = Lista()

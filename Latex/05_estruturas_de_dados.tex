@@ -330,10 +330,215 @@ def reinicializar_lista(self):
 \end{lstlisting}
 
 \subsection{Implementação Dinâmica}
+A implementação dinâmica de uma lista ligada acaba sendo o mais viável computacionalmente. Essa estrutura não deixa alocado um espaço para $n$ registros como nas estruturas vistas até agora, mas aloca cada elemento sob demanda. Para isso ela mantém a estrutura \texttt{Elementos}, e tem uma adaptação na estrutura básica da lista, armazenando por padrão apenas a referêcia ao primeiro elemento da lista.
 
+\begin{lstlisting}[label=lista_ligada_din_estrutura,caption= Lista Ligada dinâmica (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, registro, prox):
+        self.reg = registro
+        self.prox = prox
+
+class Lista:
+    def __init__(self):
+        self.inicio = None        
+\end{lstlisting}
+
+A inicialização da lista pode ter diferenetes implementações dependendo da linguagem de programação, mas em Python simplimente não haverá diferença entre a criação da estrutura e a inicialização por um outro método.
+
+\begin{lstlisting}[label=lista_ligada_din_inicializar, caption= Lista Ligada dinâmica (inicialização)]
+def inicializar_lista(self):
+   self.inicio = None
+\end{lstlisting}
+
+Para o tamanho, porém, será necessário contar todos os elementos da lista, isto é, passar para o próximo elemento apontado por um anterior, até chegar ao último elemento válido (diferente de \texttt{None}). Vale lembrar que cada registro está dentro de uma estrutura (em Python são objetos mesmo) elemento.
+
+\begin{lstlisting}[label=lista_ligada_din_tamanho, caption= Lista Ligada dinâmica (tamanho)]
+def tamanho(self):
+    endereco = self.inicio
+    tamanho = 0
+    while endereco != None:
+        tamanho += 1
+        endereco = endereco.prox
+    return tamanho
+\end{lstlisting}
+
+A exibição dos elementos segue a mesma lógica que a usada para encontrar o tamanho da lista, mas aqui são utilizados os registros dentro de cada elemento.
+
+\begin{lstlisting}[label=lista_ligada_din_exibir, caption= Lista Ligada dinâmica (exibição)]
+def imprimir_lista(self):
+    endereco = self.inicio
+    print("Lista de Registros")
+    while endereco != None:
+        print("ID:", endereco.reg.id, 
+        "Chave:", endereco.reg.chave)
+        endereco = endereco.prox
+\end{lstlisting}
+
+Em uma estrutura de lista não ordenada, a busca pode ser implementada buscando, em cada elemento válido, se o registro tem o campo correspondente ao buscado.
+
+\begin{lstlisting}[label=lista_ligada_din_busca, caption= Lista Ligada dinâmica (busca sequencial)]
+def busca(self, chave):
+    posicao = self.inicio
+    while posicao != None:
+        if posicao.reg.chave == chave:
+            return posicao
+        posicao = posicao.prox
+    return None
+\end{lstlisting}
+
+Porém, podemos adaptar o método de busca sequencial acima para outra busca sequencial que retorna também o elemento anterior ao buscado. Essa manobra é importante para se fazer uma inserção mais eficiente.
+
+\begin{lstlisting}[label=lista_ligada_din_busca_dupla, caption= Lista Ligada dinâmica (busca o anterior e atual)]
+    def busca_dupla(self, chave):
+        atual = self.inicio
+        anterior = None
+        while atual != None:
+            if atual.reg.chave == chave:
+                return anterior, atual
+            anterior = atual
+            atual = atual.prox
+        return anterior, None
+\end{lstlisting}
+
+Com auxílio da busca que retorna além do elemento visado, também seu anterior, podemos utilizá-la para verificar se a inserção é viável. Se existirem dois elmentos de mesma chave nós não iremos inserí-lo na estrutura, caso contrário a inserção é possível e devemos verificar se o elemento entrará na primeira "alocação" da lista (quando não há um anterior) ou se entrará em qualquer outra posição. Ajustamos os ponteiros para o caso que se enquadrar e a estrutura terá o novo elemento disponível para aceso na lista.
+
+\begin{lstlisting}[label=lista_ligada_din_inserir, caption= Lista Ligada dinâmica (inserção)]
+def inserir(self, reg):
+    chave = reg.chave
+    anterior, atual = self.busca_dupla(chave)
+    if atual != None: return False
+    if anterior == None:
+        novo = Elemento(reg, l.inicio)
+        self.inicio = novo
+    else:
+        novo = Elemento(reg, anterior.prox)
+        anterior.prox = novo        
+    return True
+\end{lstlisting}
+
+A remoção de elementos também utiliza a referência ao elemento anterior ao buscado, e uma troca entre ponteiros simples (anterior passa a apontar ao que seria o próximo do elemento removido, perdendo a referência).
+
+\begin{lstlisting}[label=lista_ligada_din_excluir, caption= Lista Ligada dinâmica (remoção)]
+def excluir(self, chave):
+    anterior, atual = self.busca_dupla(chave)
+    if atual == None: return False
+    if anterior == None: 
+        self.inicio = atual.prox
+    else: 
+        anterior.prox = atual.prox
+    return True
+\end{lstlisting}
+
+A reinicialização ideal deve exluir todos os elementos alocados anteriormente na memória. Isso fica mais claro em C, mas em Python é possível que percarmos a referência aos elementos e, de tempos em tempos, o Garbage Collector removerá os valores alocados nesses endereços de memória.
+
+\begin{lstlisting}[label=lista_ligada_din_reiniciar, caption= Lista Ligada dinâmica (reinicialização)]
+def reinicializar_lista(self):
+    self.inicio = None
+\end{lstlisting}
 
 
 \subsection{Implementação Circular com nó-cabeça}
+Uma lista ligada circular facilita o percorrimento de uma lista no sentido de nunca haver um elemento nulo à ser acessado. Isso pode economizar operações em laços, aliàda a abordagem de nó cabeça na lista. Esse "nó" funciona como um sentinela, pois não é um elemento que deva entrar na lista acessível ao usuário, mas é implementado como se fosse, de modo a contribiuir na redução da quantidade de operações. As estruturas usadas são as mesmas da lista dinâmica, somente com a mudança no nome da variável \texttt{inicio} para \texttt{cabeca} na estrutura da lista.
+
+\begin{lstlisting}[label=lista_ligada_circ_estrutura, caption= Lista Ligada circular (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, reg, prox):
+        self.reg = reg
+        self.prox = prox
+
+class Lista:
+    def __init__(self):
+        self.cabeca = None
+\end{lstlisting}
+
+A inicialização dessa estrutura aloca espaco para um registro e um elemento no nó cabeça, sendo essa posição para um elemento o próximo nó. Como a lista só tem esse nó cabeça como elemento, o próximo deverá apontar para sí mesmo (por isso a lista é circular).
+
+\begin{lstlisting}[label=lista_ligada_circ_inicializar, caption= Lista Ligada circular (inicialização)]
+def inicializar_lista(self):
+    self.cabeca = Elemento(Registro, Elemento)
+    self.cabeca.prox = self.cabeca
+\end{lstlisting}
+
+Para recuperar o tamanho da lista utilizamos a mesma abordage da lista dinâmica apresentada anteriormente.
+\begin{lstlisting}[label=lista_ligada_circ_tamanho, caption= Lista Ligada circular (tamanho)]
+def tamanho(self):
+    i = self.cabeca.prox
+    tam = 0
+    while i != self.cabeca:
+        tam += 1
+        i = i.prox
+    return tam
+\end{lstlisting}
+
+A exibição também segue a implementação da lista dinâmica, e é bem parecida com a função para recuperar o tamanho.
+\begin{lstlisting}[label=lista_ligada_circ_exibir, caption= Lista Ligada circular (exibição)]
+def imprimir_lista(self):
+    i = self.cabeca.prox
+    print("Lista de Registros")
+    while i != self.cabeca:
+        print("ID: ", i.reg.id, "Chave: ", i.reg.chave)
+        i = i.prox
+\end{lstlisting}
+
+A busca em uma lista ordenada pode se aproveitar do fato de que o nó cabeça funciona como um sentinela para as listas estudadas anteriormente. Nesse caso podemos usar apenas uma condição para girar o loop, pois sabemos que em algum momento a condição falhará e segará no sentinela / nó cabeça.
+\begin{lstlisting}[label=lista_ligada_circ_busca, caption= Lista Ligada circular (busca)]
+def busca_sentinela(self, id):
+    i = self.cabeca.prox
+    self.cabeca.reg.id = id
+    while i.reg.id < id:
+        i = i.prox
+    if i != self.cabeca and i.reg.id == id: return i
+    return None
+\end{lstlisting}
+
+A estrutura de busca apresentada acima pode ser adaptada para retornar também o elemento anterior ao buscado.
+\begin{lstlisting}[label=lista_ligada_circ_busca_dupla, caption= Lista Ligada circular (busca anterior e atual)]
+def busca_dupla(self, id):
+    anterior = self.cabeca
+    i = self.cabeca.prox
+    self.cabeca.reg.id = id
+    while i.reg.id < id:
+        anterior = i
+        i = i.prox
+    if i != self.cabeca and i.reg.id == id: 
+        return anterior, i
+    return anterior, None
+\end{lstlisting}
+
+O conhecimento do elemento anterior e a utilização do nó cabeça permite uma redução significativa no algoritmo apra inserção comparado à lista dinâmica sem nó cabeça. Nessa estrutura não precisamos nos preocupar com o primeiro nó da lista e seu anterior, pois o nó cabeça irá controlar os extremos da lista.
+\begin{lstlisting}[label=lista_ligada_circ_inserir, caption= Lista Ligada circular (inserção)]
+def inserir(self, reg):
+    anterior, i = self.busca_dupla(reg.id)
+    if i != None: return False
+    novo = Elemento(reg, anterior.prox)
+    anterior.prox = novo
+\end{lstlisting}
+
+A remoção apenas troca os ponteiros do elemento anterior ao ser excluído para o próximo do que está dando tchau.
+\begin{lstlisting}[label=lista_ligada_circ_excluir, caption= Lista Ligada circular (remoção)]
+def excluir(self, id):
+    anterior, i = self.busca_dupla(id)
+    if i == None: return False
+    anterior.prox = i.prox
+    del i
+    return True
+\end{lstlisting}
+
+A reinicialização em Python segue os mesmos princípios comentados na estrutura dinâmica de lista ligada.
+\begin{lstlisting}[label=lista_ligada_circ_reinicializar, caption= Lista Ligada circular (reinicialização)]
+def reinicializar_lista(self):
+    self.cabeca.prox = self.cabeca
+\end{lstlisting}
 
 \section{Pilha}
 
