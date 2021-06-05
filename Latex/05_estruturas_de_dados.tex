@@ -604,6 +604,77 @@ def reinicializar(self):
 \end{lstlisting}
 
 \subsection{Implementação dinâmica}
+A importância da implementação dinâmica de uma pilha segue a mesma importância que qualquer outra estrutura que possa ser implementada de forma estática ou dinâmica: a memória alocada. Para uma pilha, a implementação dinâmica terá apoio da estrutura Elemento, que "encapsula" os registros e tem um ponteiro para o próximo elemento. A estrutura de Pilha só precisará ter, dessa maneira, a informação do elemento do topo, conseguindo obter qualquer outra informação da pilha com isso. O topo é iniciado como uma referência nula.
+
+\begin{lstlisting}[label=pilha_din_estrutura, caption= Pilha dinâmica (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, reg, prox):
+        self.reg = reg
+        self.prox = prox
+
+class Pilha:
+    def __init__(self):
+        self.topo = None
+\end{lstlisting}
+
+Para retornar o tamanho de uma pilha será necessário contar quantos elementos existem entre o topo e \texttt{None}. A iteração acontece pelo atributo \texttt{prox} de \texttt{Elemento}.
+
+\begin{lstlisting}[label=pilha_din_tamanho, caption= Pilha dinâmica (tamanho)]
+def tamanho(self):
+    i = self.topo
+    tam = 0
+    while i != None:
+        tam += 1
+        i = i.prox
+    return tam
+\end{lstlisting}
+
+Para realizar algumas verificações corriqueiras, pode ser interessante criar uma função para verificar se uma pilha tem elementos.
+\begin{lstlisting}[label=pilha_din_esta_vazia, caption= Pilha dinâmica (está vazia?)]
+def esta_vazia(self):
+    if self.topo == None: return True
+    return False
+\end{lstlisting}
+
+A exibição é baseada na função de tamanho, funcionando com a mesma lógica acrescida da utilização dos atributos dos registros e não somente os elementos.
+\begin{lstlisting}[label=pilha_din_imprimir, caption= Pilha dinâmica (exibição)]
+def imprimir(self):
+    i = self.topo
+    tam = 0
+    print("PILHA")
+    while i != None:
+        print("ID", i.reg.id, "Chave", i.reg.chave)
+        i = i.prox
+    return tam
+\end{lstlisting}
+
+Inserção em uma pilha dinâmica depende apenas de criar um novo registro que terá como próximo o que estava no topo, e atualizando o topo para o novo registro.
+\begin{lstlisting}[label=pilha_din_push, caption= Pilha dinâmica (inserção)]
+def push(self, reg):
+    novo = Elemento(reg, self.topo)
+    self.topo = novo
+    return True
+\end{lstlisting}
+
+A remoção apenas atualiza o topo com o elemento que era apontado anteriormente pelo topo. O topo antigo é deletado da memória. Escrever sobre remoções (e outras funções) é um tanto quanto poético, então às vezes vale mais a pena focar em entender o código que talvez ajude a interpretar o texto (ambos devem caminhar juntos hein).
+\begin{lstlisting}[label=pilha_din_pop, caption= Pilha dinâmica (remoção)]
+def pop(self):
+    removed = self.topo.reg
+    self.topo = self.topo.prox
+    del removed
+    return True
+\end{lstlisting}
+
+Como já falei várias vezes, o topo vai ser reinicializado como None e isso implica que o coletor de lixo do Python irá excluir as memórias alocadas e sem uso por nós.
+\begin{lstlisting}[label=pilha_din_reiniciar, caption= Pilha dinâmica (reinicialização)]
+def reinicializar(self):
+    self.topo = None
+\end{lstlisting}
 
 \section{Deque}
 
