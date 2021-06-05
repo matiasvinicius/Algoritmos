@@ -26,12 +26,10 @@ class Pilha:
 
     def imprimir(self):
         i = self.topo
-        tam = 0
         print("PILHA")
         while i != None:
             print("ID", i.reg.id, "Chave", i.reg.chave)
             i = i.prox
-        return tam
 
     def push(self, reg):
         novo = Elemento(reg, self.topo)

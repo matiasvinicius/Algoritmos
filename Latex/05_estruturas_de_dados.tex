@@ -677,6 +677,84 @@ def reinicializar(self):
 \end{lstlisting}
 
 \section{Deque}
+Deques funciona absorvendo funções de pilhas e também de filas, que logo falaremos. Um deque consiste da premissa que você pode excluir/inserir elementos apenas no início ou no final da estrutura. Faremos aqui uma implementação dinâmica para mostrar algumas das funções possíveis.
+
+A grande diferença entre as outras estruturas aqui está na definição dos elementos, que não compreendem mais de apenas umponteiro para o pŕoximo elemento, mas também ao anterior (visto que há necessidade de se percorrer em um sentido ou no outro, conforme a necessidade). O deque tem um nó cabeça que tem tanto o ponteiro anterior quanto o próximo apontando para si mesmo na inicialização.
+
+\begin{lstlisting}[label=deque_estrutura, caption= Deque (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, reg, ant, prox):
+        self.reg = reg
+        self.ant = ant
+        self.prox = prox
+
+class Deque:
+    def __init__(self):
+        self.cabeca = Elemento(Registro, 
+        Elemento, Elemento)
+        self.cabeca.ant = self.cabeca
+        self.cabeca.prox = self.cabeca
+\end{lstlisting}
+
+Para se recuperar o tamanho do deque nesta implementação será necessário percorrer todos os elementos, nada muito diferente da pilha, mas com um adicional que o percurso pode acontecer tanto de trás pra frente quanto de ferente pra trás.
+
+\begin{lstlisting}[label=deque_tamanho, caption= Deque (tamanho)]
+def tamanho(self):
+    i = self.cabeca.prox
+    tam = 0
+    while i != self.cabeca:
+        tam += 1
+        i = i.prox
+    return tam
+\end{lstlisting}
+
+A exibição segue os mesmos fundamentos da busca pelo tamanho. Nessa implementação exibiremos o deque de trás pra frente.
+\begin{lstlisting}[label=deque_imprimir, caption= Deque (exibição)]
+def imprimir(self):
+    i = self.cabeca.ant
+    print("Deque (fim -> inicio):")
+    while i != self.cabeca:
+        print("ID:", i.reg.id, 
+        "Chave", i.reg.chave)
+        i = i.ant
+    print("Fim do Deque")
+\end{lstlisting}
+
+A inserção em um deque pode ser feita tanto no fim quanto no início da estrutura. Uma função que insere, por exemplo, no fim da estrutura, devemos criar o novo elemento com um registro e atualizar os ponteiros ao fim da estrutura.
+\begin{lstlisting}[label=deque_inserir, caption= Deque (inserção no fim)]
+def inserir_fim(self, reg):
+    novo = Elemento(reg, 
+    self.cabeca.ant, self.cabeca)
+    self.cabeca.ant = novo
+    novo.ant.prox = novo
+    return True
+\end{lstlisting}
+
+Assim como na inserção, a remoção pode ser feita no fim ou início da estrutura. Para exluir o elemento do início do deque (havendo um) devemos mudar os endereços do nó cabeça e do próximo elemento ao que será removido (no caso, o ponteiro anterior desse elemento deverá apontar para o nó cabeça).
+\begin{lstlisting}[label=deque_excluir, caption= Deque (remoção no início)]
+def excluir_inicio(self):
+    if self.cabeca.prox == self.cabeca: 
+    	return False
+    removed = self.cabeca.prox
+    self.cabeca.prox = removed.prox
+    removed.prox.ant = self.cabeca
+    del removed
+    return True
+\end{lstlisting}
+
+A reinicialização, como dito em outras estruturas dinâmicas, não terá uma remoção clara dos elementos em Pyhton, devendo o garbage collector \texttt{gb} deletá-los da memória em algum momento. Quando perdemos a referência aos objetos do deque podemos chamar o coletor de lixo, mas eventualmente ele será chamado automaticamente pelo Python. Também é possível fazer um loop sobre todos os elementos do deque e utilizar o comando \texttt{del} para deixar mais claro os elementos que serão deletados da memória, mas não é algo necessário em Python.
+\begin{lstlisting}[label=deque_reinicializar, caption= Deque (reinicialização)]
+def reinicializar(self):
+    self.cabeca.prox = self.cabeca
+    self.cabeca.ant = self.cabeca
+    gc.collect()
+    return True
+\end{lstlisting}
 
 \section{Fila}
 
