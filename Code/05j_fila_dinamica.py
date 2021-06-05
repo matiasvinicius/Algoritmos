@@ -1,45 +1,57 @@
-MAX = 50
-
 class Registro:
     def __init__(self, id, chave):
         self.id = id,
         self.chave = chave
 
+class Elemento:
+    def __init__(self, reg, prox):
+        self.reg = reg
+        self.prox = prox
+
 class Fila:
     def __init__(self):
-        self.reg = [Registro] * MAX
-        self.inicio = 0
-        self.n_elementos = 0
-    
+        self.inicio = None
+        self.fim = None
+
     def tamanho(self):
-        return self.n_elementos
-    
+        i = self.inicio
+        tam = 0
+        while i != None:
+            tam += 1
+            i = i.prox
+        return tam
+
     def imprimir(self):
         i = self.inicio
-        print("Fila")
-        for _ in range(self.tamanho()):
-            print("ID:", self.reg[i].id,
-            "Chave:", self.reg[i].chave)
-            i = (i + 1) % MAX
-        
+        print("Fila:")
+        while i != None:
+            print("ID:", i.reg.id, 
+            "Chave:", i.reg.chave)
+            i = i.prox
+        print("Fim da Fila")
+    
     def inserir(self, reg):
-        if self.n_elementos == MAX:
-            return False
-        i = (self.inicio + self.n_elementos) % MAX
-        self.reg[i] = reg
-        self.n_elementos = self.n_elementos + 1
+        novo = Elemento(reg, None)
+        if self.fim == None: 
+            self.inicio = novo
+        else:
+            self.fim.prox = novo
+        self.fim = novo
         return True
 
     def excluir(self):
-        if self.n_elementos == 0: 
+        if self.inicio == None:
             return False
-        self.inicio = (self.inicio + 1) % MAX
-        self.n_elementos = self.n_elementos - 1
+        removed = self.inicio
+        self.inicio = self.inicio.prox
+        del removed
+        if self.inicio == None:
+            self.fim = None
         return True
     
     def reinicializar(self):
-        self.inicio = 0
-        self.n_elementos = 0
+        self.inicio = None
+        self.fim = None
 
 if __name__ == "__main__":
     reg1 = Registro(1, 'b8')

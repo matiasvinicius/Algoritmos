@@ -824,6 +824,81 @@ def reinicializar(self):
 
 \subsection{Implementação dinâmica}
 
+A estrutura dinâmica de Fila pode ser implementada utilizando como auxílio a estrutura de Elementos, e armazenando uma referência ao início e ao fim da fila, pois se armazenassemos só uma dessas informações teriamos uma inserção ou remoção extremamente ineficiente (deveria passar por todos os elementos até chegar à um extremo). Incializamos o início e fim da fila como \texttt{None}, pois não há nenhum elemento ainda.
+\begin{lstlisting}[label=fila_din_estrutura, caption= Fila dinâmica (estrutra)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id,
+        self.chave = chave
+
+class Elemento:
+    def __init__(self, reg, prox):
+        self.reg = reg
+        self.prox = prox
+
+class Fila:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+\end{lstlisting}
+      
+O tamanho da estrutura pode ser determinado pasando por todos os elementos até encontrar uma referência nula.
+\begin{lstlisting}[label=fila_din_tamanho, caption= Fila dinâmica (tamanho)]
+def tamanho(self):
+    i = self.inicio
+    tam = 0
+    while i != None:
+        tam += 1
+        i = i.prox
+    return tam
+\end{lstlisting}
+
+A exibição também passa por todos os elementos e informa os atributos dos registros.
+\begin{lstlisting}[label=fila_din_imprimir, caption= Fila dinâmica (exibição)]
+def imprimir(self):
+    i = self.inicio
+    print("Fila:")
+    while i != None:
+        print("ID:", i.reg.id, 
+        "Chave:", i.reg.chave)
+        i = i.prox
+    print("Fim da Fila")
+\end{lstlisting}
+
+A inserção de uma fila acontece no fim dela, então devemos alocar um elemento com o registro que queremos adicionar e atualizar os ponteiros da estrutura. Isso inclui o ponteiro prox do elemento que está sendo criado para None (não há continuação da fila), e também é necessário verificar se a lista estava vazia, pois se estivesse o início dela também será o novo nó. 
+\begin{lstlisting}[label=fila_din_inserir, caption= Fila dinâmica (inserção)]
+def inserir(self, reg):
+    novo = Elemento(reg, None)
+    if self.fim == None: 
+        self.inicio = novo
+    else:
+        self.fim.prox = novo
+    self.fim = novo
+    return True
+\end{lstlisting}
+
+Para retirar um elemento de uma fila com pelo menos um elemento será necessário trocar o início para o elemento que era próximo dele, e se o novo início ficar nulo é porque não há mais elementos na lista e devemos atualizar o fim para nulo também.
+\begin{lstlisting}[label=fila_din_excluir, caption= Fila dinâmica (remoção)]
+def excluir(self):
+    if self.inicio == None:
+        return False
+    removed = self.inicio
+    self.inicio = self.inicio.prox
+    del removed
+    if self.inicio == None:
+        self.fim = None
+    return True
+\end{lstlisting}
+
+A reinicialização com liberação de memória está implicita, então devemos atualizar apenas o início e fim da fila para \texttt{None}.
+\begin{lstlisting}[label=fila_din_reiniciar, caption= Fila dinâmica (reinicialização)]
+def reinicializar(self):
+    self.inicio = None
+    self.fim = None
+\end{lstlisting}
+
 \section{Matrizes esparsas}
+
+
 
 \end{document}
