@@ -541,8 +541,67 @@ def reinicializar_lista(self):
 \end{lstlisting}
 
 \section{Pilha}
+Pilhas são estruturas de dados que seguem o princípio de que cada elemento novo inserido ficará no topo da estrutura, isto é, será o primeiro a sair em uma remoção (Last In First Out). Não há muito sentido em se fazer consultas à elementos nessa estruturas, portanto elas não são otimizadas para uma busca eficiente.
 
 \subsection{Implementação estática}
+
+A implementação estática depende, assim como nas listas, de um arranjo auxiliar para armazenar os valores acessíveis. A inicialização da pilha já pode ser definida pela função \texttt{\_\_init\_\_}, que é o construtor de um objeto em Python. Nossa estrutura consiste então de um arranjo de \texttt{MAX} valores e uma variável para indicar o topo (limite) da pilha.
+
+\begin{lstlisting}[label=pilha_estrutura, caption= Pilha estática (estrutura)]
+MAX = 50
+
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class Pilha:
+    def __init__(self):
+        self.reg = [Registro] * MAX
+        self.topo = -1
+\end{lstlisting}
+
+Como temos o topo da pilha conhecido, podemos descobrir o tamanho da estrutura adicionando 1 ao topo.
+\begin{lstlisting}[label=pilha_tamanho, caption= Pilha estática (tamanho)]
+def tamanho(self):
+    return self.topo + 1
+\end{lstlisting}
+
+
+A impressão dos valores consiste em passar sequencialmente por todos os elementos, como de praxe.
+\begin{lstlisting}[label=pilha_imprimir, caption= Pilha estática (exibição)]
+def imprimir(self):
+    print("PILHA:")
+    i = self.topo
+    while i >= 0:
+        print("ID", self.reg[i].id,
+        "Chave:", self.reg[i].chave)
+        i -= 1
+\end{lstlisting}
+
+A inserção em uma pilha também é chamada de \textit{PUSH}. Bsata apenas adicionar um elemento na posição indicada pelo topo da pilha.
+\begin{lstlisting}[label=pilha_inserir, caption= Pilha estática (inserção)]
+def push(self, reg):
+    if self.topo >= MAX-1: return False
+    self.topo = self.topo + 1
+    self.reg[self.topo] = reg
+    return True
+\end{lstlisting}
+
+Para remover (operação também chamada de \textit{POP}) basta encontrar o topo e reduzir em 1 o valor dele, assim o elemento que estava na sequência estará inacessível e suscetível à sobrescrita.
+\begin{lstlisting}[label=pilha_remover, caption= Pilha estática (remoção)]
+def pop (self):
+    if self.topo == -1: return False
+    removed = self.reg[self.topo]
+    self.topo = self.topo - 1
+    return removed
+\end{lstlisting}
+
+Para reinicializar uma pilha estática basta mudar o valor do topo para -1.
+\begin{lstlisting}[label=pilha_tamanho, caption= Pilha estática (reinicializar)]
+def reinicializar(self):
+    self.topo = -1
+\end{lstlisting}
 
 \subsection{Implementação dinâmica}
 
