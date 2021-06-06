@@ -899,6 +899,83 @@ def reinicializar(self):
 
 \section{Matrizes esparsas}
 
+Matrizes esparsas são aquelas que têm muitos valore nulos e poucos valores de relevância para o problema. Matrizes desse tipo podem ser implemetadas com auxílio de um arranjo, onde cada posição (linha) será uma lista ligada que pode ter até \texttt{n\_colunas}.
+\begin{lstlisting}[label=matriz_estrutura, caption= Matriz Esparsa (estrutura)]
+class Registro:
+    def __init__(self, id, chave):
+        self.id = id
+        self.chave = chave
+
+class No:
+    def __init__(self, reg, coluna, prox):
+        self.registro = reg
+        self.coluna = coluna
+        self.prox = prox 
+
+class Matriz:
+    def __init__(self, linhas, colunas):
+        self.A = [No] * linhas
+        for i in range(linhas): self.A[i] = None
+        self.linhas = linhas
+        self.colunas = colunas
+\end{lstlisting}
+
+Para adicionar valores na matriz, devemos ir em um índice da estrutura (linha) e identificar se há alguém na lista ligada na posição que foi solicitada a atribuição. Se houver será sobrescrito, caso contrário será alocado um novo espaço de memória para esse registro na lista ligada. Para remover valores, iremos considerar que registros com o ID 0 deverão ser uma referência do usuário para uma posição que deva ser desconsiderada.
+\begin{lstlisting}[label=matriz_atribuir, caption= Matriz Esparsa (atribuição)]
+def atribuir(self, linha, coluna, reg):
+    if (linha < 0 or
+    linha >= self.linhas or
+    coluna < 0 or
+    coluna >= self.colunas):
+        return False
+    anterior = None
+    atual = self.A[linha]
+    
+    while (atual != None and
+    atual.coluna < coluna):
+        anterior = atual
+        autal = atual.prox
+
+    if (atual != None 
+    and atual.coluna == coluna):
+        if reg.id == 0:
+            if anterior == None:
+                self.A[linha] = atual.prox
+            else:
+                anterior.prox = atual.prox
+            del atual
+        else:
+            atual.reg = reg
+    
+    else:
+        novo = No(reg, coluna, atual)
+        if anterior == None:
+            self.A[linha] = novo
+        else:
+            anterior.prox = novo
+
+    return True
+\end{lstlisting}
+
+O acesso da matriz é feito com base na linha e coluna que se quer verificar um registro, havendo alguém lá, retornará o objeto registro que fora atribuído anteriormente na estrutura.
+\begin{lstlisting}[label=matriz_acesso, caption= Matriz Esparsa (acesso)]
+def acessar(self, linha, coluna):
+    if (linha < 0 or 
+    linha >= self.linhas or
+    coluna < 0 or
+    coluna >= self.colunas):
+        return -1
+
+    atual = self.A[linha]
+    while (atual != None and
+    atual.coluna < coluna):
+        atual = atual.prox
+    if (atual != None and
+    atual.coluna == coluna):
+        return atual.registro
+    else: return -1
+\end{lstlisting}
+
 
 
 \end{document}
