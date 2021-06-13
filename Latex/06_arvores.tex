@@ -1,0 +1,64 @@
+\documentclass[a4paper, twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{a4wide}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+	language=Python,
+	basicstyle=\small\sffamily,
+	numbers=left,
+	numberstyle=\tiny,
+	xleftmargin = 3em,
+	frame=tb,
+	columns=fullflexible,
+	showstringspaces=false,
+}
+
+\graphicspath{ {images/} }
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\title{Árvores}
+\author{Vinicius A. Matias}
+\date{\today}
+\begin{document}
+	\maketitle
+	
+	\section{Introdução}
+	Árvores são estruturas de dados que na maioria dos casos visam aumentar a eficiência na busca de elementos armazenados. Elas podem seguir diferentes abordagens, e aqui passaremos por algumas das possíveis. 
+	
+	\section{Conceitos básicos}
+	Árvores tem elementos centrais que dividem elementos entre esquerda e direita (normalmente). O nó que faz essa primeira divisão é chamado de raíz. Abaixo da raíz temos subárvores, e no final de cada subárvore temos os nós folha. Para cada nó da árvorem o número de subárvores geradas é chamado de grau do nó.
+	
+	A altura de uma árvore é o maior comprimento entre a raíz e um nó folha. Também pode ser incluído para a altura de nós, seguindo o mesmo princípio (comprimento para o nó folha).  A profundidade é o processo inverso, ou seja, a distância de um nó até a raíz. 
+	
+	Árvores binárias são as que tem apenas um ou dois descendentes. Se o grau é a quantidade de descendentes de um nó, árvores binárias precisam ter nós de, no máximo, grau 2.
+
+\section{Árvore binária de busca}
+Uma árvore de binária que visa a busca eficiente terá, assim como nas outras árvores, sua implementação baseada na passagem da raíz. A raíz é um nó, e cada nó de uma árvore deverá ter acesso à seus descendentes à esquerda e à direita.
+
+\begin{lstlisting}[label=abp_no,caption= Nó de uma árvore binária de pesquisa]
+class No:
+    def __init__(self, ch, esq, dir):
+        self.chave = ch
+        self.esq = esq
+        self.dir = dir
+\end{lstlisting}
+
+
+
+
+	
+\end{document}
