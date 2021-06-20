@@ -44,7 +44,7 @@ def busca_no_e_pai(raiz, ch):
             filho = filho.dir    
     return None, None 
 
-#NOT TRUST
+#NÃO CONFIÁVEL - ver remover() em 07_avl.py
 def remove_no(raiz, ch):
     pai, no = busca_no_e_pai(raiz, ch)
     if no == None: 
@@ -126,7 +126,7 @@ def inserir_no(raiz, ch):
         raiz.dir = inserir_no(raiz.dir, ch)
     return raiz
 
-#NOT TRUST
+#NÃO CONFIÁVEL - ver remover() em 07_avl.py
 def excluir_no(raiz, chave):
     atual = raiz
     if atual == None: return False
@@ -144,7 +144,7 @@ def excluir_no(raiz, chave):
     return excluir_no(atual.esq, ch)
 
 if __name__ == "__main__":
-    raiz = No(15)9
+    raiz = No(15)
     nos = [No(12), 
     No(22), 
     No(10), 
