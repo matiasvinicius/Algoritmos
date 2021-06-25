@@ -1,3 +1,5 @@
+from queue import Queue
+
 # Grafo como Lista de Adjacências
 
 # Lista ligada de arestas / adjacências de um vértice dirigido ou não
@@ -32,11 +34,74 @@ class Grafo:
         for i in self.arr_vertices:
             adj = i.cabeca
             while adj != None:
-                print("Nó", i.info, "vai para nó", self.arr_vertices[adj.vertice].info, "com peso", adj.peso)
+                print("Nó", i.info, "vai para nó", 
+                self.arr_vertices[adj.vertice].info, "com peso", 
+                adj.peso)
                 adj = adj.prox
         print()
 
+    def visita_profundidade(self, ini, cor, info):
+        if ini == None: return False
+        print("Visita nó", self.arr_vertices[ini].info)
 
+        if self.arr_vertices[ini].info == info:
+            print("Achou nó", info)
+            return True
+        
+        cor[ini] = 1
+        v = self.arr_vertices[ini].cabeca
+        
+        while v != None:
+            if cor[v.vertice] == 0:
+                achou = g.visita_profundidade(v.vertice, cor, info)
+                if not(achou is False): return achou
+            v = v.prox
+        
+        cor[ini] = 2
+        return False
+
+    def busca_profundidade(self, info):
+        cor = [0 for _ in range(self.vertices)]
+        for u in range(self.vertices):
+            if cor[u] == 0:
+                achou = g.visita_profundidade(u, cor, info)
+                if not(achou is False): return achou
+                print("----")
+        return False
+
+
+    def visita_largura(self, explorados, u, info):            
+        f = Queue(self.vertices)
+        f.put(u)
+
+        while not(f.empty()):
+            u = f.get()
+            v = g.arr_vertices[u].cabeca
+            print('Visita nó', g.arr_vertices[u].info)
+            
+            if self.arr_vertices[u].info == info:
+                print('Achou nó', info)
+                return True
+            
+            explorados[u] = True
+            while v:
+                if explorados[v.vertice] is False:
+                    explorados[v.vertice] = True
+                    f.put(v.vertice)
+                v = v.prox
+
+        return False
+
+    def busca_largura(self, info):
+        explorados = [False for _ in range(self.vertices)]
+
+        for u in range(self.vertices):
+            if explorados[u] == False:
+                achou = g.visita_largura(explorados, u, info)
+                if achou is True: return achou
+            print("----")
+        
+        return False
 
 if __name__ == "__main__":
     g = Grafo(10)
@@ -50,3 +115,16 @@ if __name__ == "__main__":
     g.criar_aresta(7, 0, 5)
     g.criar_aresta(7, 7, 0)
     g.imprimir()
+    print(g.busca_profundidade('J'))
+    print()
+    print(g.busca_profundidade('E'))
+    print()
+    print(g.busca_profundidade('L'))
+    print()
+
+    print(g.busca_largura('J'))
+    print()
+    print(g.busca_largura('E'))
+    print()
+    print(g.busca_largura('L'))
+    print()
