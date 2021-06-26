@@ -20,7 +20,7 @@ Os relatórios tratam de:
 
 * Árvores: Árvores Binárias de Busca e Árvores AVL;
 
-* Grafos: Implementação como lista de adjacências, algoritmo de busca em profundidade, busca em largura e algoritmo de Dijkstra.
+* Grafos: Implementação como lista de adjacências, algoritmo de busca em profundidade, busca em largura e algoritmos de Dijkstra, Bellman-Ford, Floyd Warshall e ciclo hamiltoninano.
 
 Os últimos textos não foram concluídos, mas seus algoritmos já estão no repositório.
 
