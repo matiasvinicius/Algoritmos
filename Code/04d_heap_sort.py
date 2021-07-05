@@ -47,5 +47,5 @@ if __name__ == "__main__":
     B=  [1,2,3,4,5,6,7,8]
     construir_heap_max(B)
     print(B)
-    heap_sort(A)
-    print(A)
+    heap_sort(B)
+    print(B)
